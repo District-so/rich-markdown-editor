@@ -1,6 +1,6 @@
 import { wrappingInputRule } from "prosemirror-inputrules";
 import toggleWrap from "../commands/toggleWrap";
-import { WarningIcon, InfoIcon, StarredIcon } from "outline-icons";
+import { WarningIcon, InfoIcon, StarredIcon, CheckmarkIcon, CloseIcon } from "outline-icons";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import Node from "./Node";
@@ -9,7 +9,11 @@ export default class Notice extends Node {
   get styleOptions() {
     return Object.entries({
       info: this.options.dictionary.info,
+      secondary: this.options.dictionary.secondary,
+      success: this.options.dictionary.success,
+      info: this.options.dictionary.info,
       warning: this.options.dictionary.warning,
+      danger: this.options.dictionary.danger,
       tip: this.options.dictionary.tip,
     });
   }
@@ -44,9 +48,13 @@ export default class Notice extends Node {
 
         let component;
 
-        if (node.attrs.style === "tip") {
+        if (node.attrs.style === "success") {
+          component = <CheckmarkIcon color="currentColor" />;
+        } else if (node.attrs.style === "tip") {
           component = <StarredIcon color="currentColor" />;
         } else if (node.attrs.style === "warning") {
+          component = <WarningIcon color="currentColor" />;
+        } else if (node.attrs.style === "danger") {
           component = <WarningIcon color="currentColor" />;
         } else {
           component = <InfoIcon color="currentColor" />;

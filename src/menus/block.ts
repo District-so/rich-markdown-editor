@@ -14,6 +14,7 @@ import {
   WarningIcon,
   InfoIcon,
   LinkIcon,
+  CheckmarkIcon
 } from "outline-icons";
 import { MenuItem } from "../types";
 import baseDictionary from "../dictionary";
@@ -126,10 +127,31 @@ export default function blockMenuItems(
     },
     {
       name: "container_notice",
+      title: dictionary.secondaryNotice,
+      icon: InfoIcon,
+      keywords: "container_notice card information",
+      attrs: { style: "secondary" },
+    },
+    {
+      name: "container_notice",
+      title: dictionary.successNotice,
+      icon: CheckmarkIcon,
+      keywords: "container_notice card information",
+      attrs: { style: "success" },
+    },
+    {
+      name: "container_notice",
       title: dictionary.warningNotice,
       icon: WarningIcon,
       keywords: "container_notice card error",
       attrs: { style: "warning" },
+    },
+    {
+      name: "container_notice",
+      title: dictionary.dangerNotice,
+      icon: WarningIcon,
+      keywords: "container_notice card information",
+      attrs: { style: "danger" },
     },
     {
       name: "container_notice",
