@@ -37,6 +37,12 @@ export declare const base: {
     noticeTipText: string;
     noticeWarningBackground: string;
     noticeWarningText: string;
+    noticeSuccessBackground: string;
+    noticeSuccessText: string;
+    noticeSecondaryBackground: string;
+    noticeSecondaryText: string;
+    noticeDangerBackground: string;
+    noticeDangerText: string;
     almostBlack: string;
     lightBlack: string;
     almostWhite: string;
@@ -106,6 +112,12 @@ export declare const light: {
     noticeTipText: string;
     noticeWarningBackground: string;
     noticeWarningText: string;
+    noticeSuccessBackground: string;
+    noticeSuccessText: string;
+    noticeSecondaryBackground: string;
+    noticeSecondaryText: string;
+    noticeDangerBackground: string;
+    noticeDangerText: string;
     almostBlack: string;
     lightBlack: string;
     almostWhite: string;
@@ -175,6 +187,12 @@ export declare const dark: {
     noticeTipText: string;
     noticeWarningBackground: string;
     noticeWarningText: string;
+    noticeSuccessBackground: string;
+    noticeSuccessText: string;
+    noticeSecondaryBackground: string;
+    noticeSecondaryText: string;
+    noticeDangerBackground: string;
+    noticeDangerText: string;
     almostBlack: string;
     lightBlack: string;
     almostWhite: string;

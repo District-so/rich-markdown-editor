@@ -104,20 +104,6 @@ function blockMenuItems(dictionary) {
             keywords: "container_notice card information",
             attrs: { style: "info" },
         },
-        {
-            name: "container_notice",
-            title: dictionary.warningNotice,
-            icon: outline_icons_1.WarningIcon,
-            keywords: "container_notice card error",
-            attrs: { style: "warning" },
-        },
-        {
-            name: "container_notice",
-            title: dictionary.tipNotice,
-            icon: outline_icons_1.StarredIcon,
-            keywords: "container_notice card suggestion",
-            attrs: { style: "tip" },
-        },
     ];
 }
 exports.default = blockMenuItems;

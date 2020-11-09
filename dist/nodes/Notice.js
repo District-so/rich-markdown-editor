@@ -36,7 +36,10 @@ class Notice extends Node_1.default {
     get styleOptions() {
         return Object.entries({
             info: this.options.dictionary.info,
+            secondary: this.options.dictionary.secondary,
+            success: this.options.dictionary.success,
             warning: this.options.dictionary.warning,
+            danger: this.options.dictionary.danger,
             tip: this.options.dictionary.tip,
         });
     }
@@ -66,10 +69,16 @@ class Notice extends Node_1.default {
                     select.appendChild(option);
                 });
                 let component;
-                if (node.attrs.style === "tip") {
+                if (node.attrs.style === "success") {
+                    component = React.createElement(outline_icons_1.CheckmarkIcon, { color: "currentColor" });
+                }
+                else if (node.attrs.style === "tip") {
                     component = React.createElement(outline_icons_1.StarredIcon, { color: "currentColor" });
                 }
                 else if (node.attrs.style === "warning") {
+                    component = React.createElement(outline_icons_1.WarningIcon, { color: "currentColor" });
+                }
+                else if (node.attrs.style === "danger") {
                     component = React.createElement(outline_icons_1.WarningIcon, { color: "currentColor" });
                 }
                 else {

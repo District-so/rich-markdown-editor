@@ -11,7 +11,6 @@ export default class Notice extends Node {
       info: this.options.dictionary.info,
       secondary: this.options.dictionary.secondary,
       success: this.options.dictionary.success,
-      info: this.options.dictionary.info,
       warning: this.options.dictionary.warning,
       danger: this.options.dictionary.danger,
       tip: this.options.dictionary.tip,

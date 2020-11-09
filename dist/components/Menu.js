@@ -19,7 +19,7 @@ class Menu extends React.Component {
         const { view, items } = this.props;
         const { state } = view;
         const Tooltip = this.props.tooltip;
-        return (React.createElement("div", { style: { display: 'flex' } }, items.map((item, index) => {
+        return (React.createElement("div", { style: { display: "flex" } }, items.map((item, index) => {
             if (item.name === "separator" && item.visible !== false) {
                 return React.createElement(ToolbarSeparator_1.default, { key: index });
             }
