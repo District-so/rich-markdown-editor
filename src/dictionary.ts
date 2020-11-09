@@ -30,7 +30,7 @@ export const base = {
   image: "Image",
   imageUploadError: "Sorry, an error occurred uploading the image",
   info: "Info",
-  infoNotice: "Info notice",
+  infoNotice: "Notice Block",
   link: "Link",
   linkCopied: "Link copied to clipboard",
   mark: "Highlight",
