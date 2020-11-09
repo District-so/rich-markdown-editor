@@ -647,12 +647,6 @@ const StyledEditor = styled("div")<{
   readOnly?: boolean;
   readOnlyWriteCheckboxes?: boolean;
 }>`
-  color: ${props => props.theme.text};
-  background: ${props => props.theme.background};
-  font-family: ${props => props.theme.fontFamily};
-  font-weight: ${props => props.theme.fontWeight};
-  font-size: 1em;
-  line-height: 1.7em;
   width: 100%;
 
   .ProseMirror {
@@ -864,6 +858,24 @@ const StyledEditor = styled("div")<{
     top: 1px;
   }
 
+  .notice-block.secondary {
+    background: ${props => props.theme.noticeSecondaryBackground};
+    color: ${props => props.theme.noticeSecondaryText};
+
+    a {
+      color: ${props => props.theme.noticeSecondaryText};
+    }
+  }
+
+  .notice-block.success {
+    background: ${props => props.theme.noticeSuccessBackground};
+    color: ${props => props.theme.noticeSuccessText};
+
+    a {
+      color: ${props => props.theme.noticeSuccessText};
+    }
+  }
+
   .notice-block.tip {
     background: ${props => props.theme.noticeTipBackground};
     color: ${props => props.theme.noticeTipText};
@@ -879,6 +891,15 @@ const StyledEditor = styled("div")<{
 
     a {
       color: ${props => props.theme.noticeWarningText};
+    }
+  }
+
+  .notice-block.danger {
+    background: ${props => props.theme.noticeDangerBackground};
+    color: ${props => props.theme.noticeDangerText};
+
+    a {
+      color: ${props => props.theme.noticeDangerText};
     }
   }
 

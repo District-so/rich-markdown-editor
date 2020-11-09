@@ -293,6 +293,8 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         createLink: string;
         createLinkError: string;
         createNewDoc: string;
+        danger: string;
+        dangerNotice: string;
         deleteColumn: string;
         deleteRow: string;
         deleteTable: string;
@@ -322,9 +324,13 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         quote: string;
         removeLink: string;
         searchOrPasteLink: string;
+        secondary: string;
+        secondaryNotice: string;
         strikethrough: string;
         strong: string;
         subheading: string;
+        success: string;
+        successNotice: string;
         table: string;
         tip: string;
         tipNotice: string;
@@ -346,6 +352,8 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         createLink: string;
         createLinkError: string;
         createNewDoc: string;
+        danger: string;
+        dangerNotice: string;
         deleteColumn: string;
         deleteRow: string;
         deleteTable: string;
@@ -375,9 +383,13 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         quote: string;
         removeLink: string;
         searchOrPasteLink: string;
+        secondary: string;
+        secondaryNotice: string;
         strikethrough: string;
         strong: string;
         subheading: string;
+        success: string;
+        successNotice: string;
         table: string;
         tip: string;
         tipNotice: string;
@@ -399,6 +411,8 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         createLink: string;
         createLinkError: string;
         createNewDoc: string;
+        danger: string;
+        dangerNotice: string;
         deleteColumn: string;
         deleteRow: string;
         deleteTable: string;
@@ -428,9 +442,13 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         quote: string;
         removeLink: string;
         searchOrPasteLink: string;
+        secondary: string;
+        secondaryNotice: string;
         strikethrough: string;
         strong: string;
         subheading: string;
+        success: string;
+        successNotice: string;
         table: string;
         tip: string;
         tipNotice: string;
