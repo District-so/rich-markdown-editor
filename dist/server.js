@@ -18,6 +18,8 @@ const HardBreak_1 = __importDefault(require("./nodes/HardBreak"));
 const Heading_1 = __importDefault(require("./nodes/Heading"));
 const HorizontalRule_1 = __importDefault(require("./nodes/HorizontalRule"));
 const Image_1 = __importDefault(require("./nodes/Image"));
+const LinkPreview_1 = __importDefault(require("./nodes/LinkPreview"));
+const Button_1 = __importDefault(require("./nodes/Button"));
 const ListItem_1 = __importDefault(require("./nodes/ListItem"));
 const Notice_1 = __importDefault(require("./nodes/Notice"));
 const OrderedList_1 = __importDefault(require("./nodes/OrderedList"));
@@ -60,6 +62,8 @@ const extensions = new ExtensionManager_1.default([
     new Highlight_1.default(),
     new Italic_1.default(),
     new Link_1.default(),
+    new Button_1.default(),
+    new LinkPreview_1.default(),
     new Strikethrough_1.default(),
     new Placeholder_1.default(),
     new Underline_1.default(),

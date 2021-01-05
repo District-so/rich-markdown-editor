@@ -32,6 +32,7 @@ import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
 import Blockquote from "./nodes/Blockquote";
 import BulletList from "./nodes/BulletList";
+import Button from "./nodes/Button";
 import CodeBlock from "./nodes/CodeBlock";
 import CodeFence from "./nodes/CodeFence";
 import CheckboxList from "./nodes/CheckboxList";
@@ -42,6 +43,7 @@ import Heading from "./nodes/Heading";
 import HorizontalRule from "./nodes/HorizontalRule";
 import Image from "./nodes/Image";
 import ListItem from "./nodes/ListItem";
+import LinkPreview from "./nodes/LinkPreview";
 import Notice from "./nodes/Notice";
 import OrderedList from "./nodes/OrderedList";
 import Paragraph from "./nodes/Paragraph";
@@ -114,7 +116,7 @@ export type Props = {
 
 type State = {
   blockMenuOpen: boolean;
-  linkMenuOpen: boolean;
+  linkMenuState: number;
   blockMenuSearch: string;
 };
 
@@ -142,7 +144,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
   state = {
     blockMenuOpen: false,
-    linkMenuOpen: false,
+    linkMenuState: 0,
     blockMenuSearch: "",
   };
 
@@ -276,6 +278,17 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         new Underline(),
         new Link({
           onKeyboardShortcut: this.handleOpenLinkMenu,
+          onClickLink: this.props.onClickLink,
+          onClickHashtag: this.props.onClickHashtag,
+          onHoverLink: this.props.onHoverLink,
+        }),
+        new LinkPreview({
+          onClickLink: this.props.onClickLink,
+          onClickHashtag: this.props.onClickHashtag,
+          onHoverLink: this.props.onHoverLink,
+        }),
+        new Button({
+          dictionary,
           onClickLink: this.props.onClickLink,
           onClickHashtag: this.props.onClickHashtag,
           onHoverLink: this.props.onHoverLink,
@@ -485,12 +498,12 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     }
   };
 
-  handleOpenLinkMenu = () => {
-    this.setState({ linkMenuOpen: true });
+  handleOpenLinkMenu = (type: string) => {
+    this.setState({ linkMenuState: type == 'preview' ? 2 : (type == 'button' ? 3 : 1) });
   };
 
   handleCloseLinkMenu = () => {
-    this.setState({ linkMenuOpen: false });
+    this.setState({ linkMenuState: 0 });
   };
 
   handleOpenBlockMenu = (search: string) => {
@@ -612,7 +625,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                 <LinkToolbar
                   view={this.view}
                   dictionary={dictionary}
-                  isActive={this.state.linkMenuOpen}
+                  activeState={this.state.linkMenuState}
                   onCreateLink={this.props.onCreateLink}
                   onSearchLink={this.props.onSearchLink}
                   onClickLink={this.props.onClickLink}
@@ -1010,7 +1023,8 @@ const StyledEditor = styled("div")<{
   }
 
   .code-block,
-  .notice-block {
+  .notice-block,
+  .btn-block {
     position: relative;
 
     select,

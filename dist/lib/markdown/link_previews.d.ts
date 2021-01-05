@@ -1,2 +1,3 @@
-export default function link_previews(md: any): void;
+import MarkdownIt from "markdown-it";
+export default function markdownItLinkPreview(md: MarkdownIt): void;
 //# sourceMappingURL=link_previews.d.ts.map

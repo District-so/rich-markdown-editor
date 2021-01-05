@@ -140,7 +140,7 @@ export declare type Props = {
 };
 declare type State = {
     blockMenuOpen: boolean;
-    linkMenuOpen: boolean;
+    linkMenuState: number;
     blockMenuSearch: string;
 };
 declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
@@ -156,7 +156,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
     };
     state: {
         blockMenuOpen: boolean;
-        linkMenuOpen: boolean;
+        linkMenuState: number;
         blockMenuSearch: string;
     };
     extensions: ExtensionManager;
@@ -200,7 +200,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
     handleChange: () => void;
     handleSave: () => void;
     handleSaveAndExit: () => void;
-    handleOpenLinkMenu: () => void;
+    handleOpenLinkMenu: (type: string) => void;
     handleCloseLinkMenu: () => void;
     handleOpenBlockMenu: (search: string) => void;
     handleCloseBlockMenu: () => void;
@@ -298,6 +298,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         alignLeft: string;
         alignRight: string;
         bulletList: string;
+        button: string;
         checkboxList: string;
         codeBlock: string;
         codeCopied: string;
@@ -307,6 +308,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         createNewDoc: string;
         danger: string;
         dangerNotice: string;
+        dark: string;
         deleteColumn: string;
         deleteRow: string;
         deleteTable: string;
@@ -322,8 +324,10 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         imageUploadError: string;
         info: string;
         infoNotice: string;
+        light: string;
         link: string;
         linkCopied: string;
+        linkPreview: string;
         mark: string;
         newLineEmpty: string;
         newLineWithSlash: string;
@@ -333,6 +337,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         pasteLink: string;
         pasteLinkWithTitle: (title: string) => string;
         placeholder: string;
+        primary: string;
         quote: string;
         removeLink: string;
         searchOrPasteLink: string;
@@ -348,6 +353,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         tipNotice: string;
         warning: string;
         warningNotice: string;
+        white: string;
     }> | undefined) => {
         addColumnAfter: string;
         addColumnBefore: string;
@@ -357,6 +363,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         alignLeft: string;
         alignRight: string;
         bulletList: string;
+        button: string;
         checkboxList: string;
         codeBlock: string;
         codeCopied: string;
@@ -366,6 +373,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         createNewDoc: string;
         danger: string;
         dangerNotice: string;
+        dark: string;
         deleteColumn: string;
         deleteRow: string;
         deleteTable: string;
@@ -381,8 +389,10 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         imageUploadError: string;
         info: string;
         infoNotice: string;
+        light: string;
         link: string;
         linkCopied: string;
+        linkPreview: string;
         mark: string;
         newLineEmpty: string;
         newLineWithSlash: string;
@@ -392,6 +402,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         pasteLink: string;
         pasteLinkWithTitle: (title: string) => string;
         placeholder: string;
+        primary: string;
         quote: string;
         removeLink: string;
         searchOrPasteLink: string;
@@ -407,6 +418,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         tipNotice: string;
         warning: string;
         warningNotice: string;
+        white: string;
     } | {
         addColumnAfter: string;
         addColumnBefore: string;
@@ -416,6 +428,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         alignLeft: string;
         alignRight: string;
         bulletList: string;
+        button: string;
         checkboxList: string;
         codeBlock: string;
         codeCopied: string;
@@ -425,6 +438,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         createNewDoc: string;
         danger: string;
         dangerNotice: string;
+        dark: string;
         deleteColumn: string;
         deleteRow: string;
         deleteTable: string;
@@ -440,8 +454,10 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         imageUploadError: string;
         info: string;
         infoNotice: string;
+        light: string;
         link: string;
         linkCopied: string;
+        linkPreview: string;
         mark: string;
         newLineEmpty: string;
         newLineWithSlash: string;
@@ -451,6 +467,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         pasteLink: string;
         pasteLinkWithTitle: (title: string) => string;
         placeholder: string;
+        primary: string;
         quote: string;
         removeLink: string;
         searchOrPasteLink: string;
@@ -466,6 +483,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         tipNotice: string;
         warning: string;
         warningNotice: string;
+        white: string;
     }) & import("lodash").MemoizedFunction;
     render: () => JSX.Element;
 }

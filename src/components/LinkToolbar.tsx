@@ -7,7 +7,7 @@ import createAndInsertLink from "../commands/createAndInsertLink";
 import baseDictionary from "../dictionary";
 
 type Props = {
-  isActive: boolean;
+  activeState: number;
   view: EditorView;
   tooltip: typeof React.Component | React.FC<any>;
   dictionary: typeof baseDictionary;
@@ -23,7 +23,8 @@ function isActive(props) {
   const { selection } = view.state;
 
   const paragraph = view.domAtPos(selection.$from.pos);
-  return props.isActive && !!paragraph.node;
+  
+  return (props.activeState > 0) && !!paragraph.node;
 }
 
 export default class LinkToolbar extends React.Component<Props> {
@@ -70,18 +71,34 @@ export default class LinkToolbar extends React.Component<Props> {
 
     const href = `creating#${title}…`;
 
-    // Insert a placeholder link
-    dispatch(
-      view.state.tr
-        .insertText(title, from, to)
-        .addMark(
-          from,
-          to + title.length,
-          state.schema.marks.link.create({ href })
-        )
-    );
+    var is_button = false;
 
-    createAndInsertLink(view, title, href, {
+    // Insert a placeholder link
+    if(this.props.activeState == 1){
+      dispatch(
+        view.state.tr
+          .insertText(title, from, to)
+          .addMark(
+            from,
+            to + title.length,
+            state.schema.marks.link.create({ href })
+          )
+      );
+    } else if(this.props.activeState == 3) {
+      is_button = true;
+      dispatch(
+        view.state.tr
+          .insertText(title, from, to)
+          .setBlockType(
+            from,
+            to + title.length,
+            state.schema.nodes.button,
+            { href, title }
+          )
+      );
+    }
+
+    createAndInsertLink(view, title, href, is_button, {
       onCreateLink,
       onShowToast,
       dictionary,
@@ -91,11 +108,13 @@ export default class LinkToolbar extends React.Component<Props> {
   handleOnSelectLink = ({
     href,
     title,
+    subtitle,
+    image,
   }: {
     href: string;
     title: string;
-    from: number;
-    to: number;
+    subtitle?: string;
+    image?: string;
   }) => {
     const { view, onClose } = this.props;
 
@@ -106,15 +125,48 @@ export default class LinkToolbar extends React.Component<Props> {
     const { from, to } = state.selection;
     assert(from === to);
 
-    dispatch(
-      view.state.tr
-        .insertText(title, from, to)
-        .addMark(
-          from,
-          to + title.length,
-          state.schema.marks.link.create({ href })
-        )
-    );
+    if(this.props.activeState == 1 || (this.props.activeState == 2 && !subtitle && !image)){
+      // simple link
+      dispatch(
+        view.state.tr
+          .insertText(title, from, to)
+          .addMark(
+            from,
+            to + title.length,
+            state.schema.marks.link.create({ href })
+          )
+      );
+    } else if(this.props.activeState == 2) {
+      // link with preview
+      dispatch(
+        view.state.tr
+          .insert(
+            from,
+            state.schema.nodes.link_with_preview.create({ href, title, subtitle, image })
+          )
+      );
+    } else {
+      // button
+      dispatch(
+        view.state.tr
+          .insertText(title, from, to)
+          .setBlockType(
+            from,
+            to + title.length,
+            state.schema.nodes.button,
+            { href, title }
+          )
+      );
+      // dispatch(
+      //   view.state.tr
+      //     .insertText(title, from, to)
+      //     .addMark(
+      //       from,
+      //       to + title.length,
+      //       state.schema.marks.button.create({ href })
+      //     )
+      // );
+    }
   };
 
   render() {

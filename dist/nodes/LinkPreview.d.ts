@@ -54,7 +54,7 @@ export default class LinkPreview extends Node {
     get plugins(): Plugin<any, any>[];
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
-        block: string;
+        node: string;
         getAttrs: (tok: any) => {
             href: any;
             title: any;

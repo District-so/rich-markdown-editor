@@ -10,6 +10,8 @@ const embeds_1 = __importDefault(require("./embeds"));
 const breaks_1 = __importDefault(require("./breaks"));
 const tables_1 = __importDefault(require("./tables"));
 const notices_1 = __importDefault(require("./notices"));
+const link_previews_1 = __importDefault(require("./link_previews"));
+const buttons_1 = __importDefault(require("./buttons"));
 const underlines_1 = __importDefault(require("./underlines"));
 function rules({ embeds }) {
     return markdown_it_1.default("default", {
@@ -17,6 +19,8 @@ function rules({ embeds }) {
         html: false,
     })
         .use(embeds_1.default(embeds))
+        .use(link_previews_1.default)
+        .use(buttons_1.default)
         .use(breaks_1.default)
         .use(checkboxes_1.default)
         .use(mark_1.default({ delim: "==", mark: "mark" }))

@@ -1,5 +1,5 @@
 import { EditorView } from "prosemirror-view";
-declare const createAndInsertLink: (view: EditorView<any>, title: string, href: string, options: {
+declare const createAndInsertLink: (view: EditorView<any>, title: string, href: string, is_button: boolean, options: {
     dictionary: {
         addColumnAfter: string;
         addColumnBefore: string;
@@ -9,6 +9,7 @@ declare const createAndInsertLink: (view: EditorView<any>, title: string, href: 
         alignLeft: string;
         alignRight: string;
         bulletList: string;
+        button: string;
         checkboxList: string;
         codeBlock: string;
         codeCopied: string;
@@ -18,6 +19,7 @@ declare const createAndInsertLink: (view: EditorView<any>, title: string, href: 
         createNewDoc: string;
         danger: string;
         dangerNotice: string;
+        dark: string;
         deleteColumn: string;
         deleteRow: string;
         deleteTable: string;
@@ -33,8 +35,10 @@ declare const createAndInsertLink: (view: EditorView<any>, title: string, href: 
         imageUploadError: string;
         info: string;
         infoNotice: string;
+        light: string;
         link: string;
         linkCopied: string;
+        linkPreview: string;
         mark: string;
         newLineEmpty: string;
         newLineWithSlash: string;
@@ -44,6 +48,7 @@ declare const createAndInsertLink: (view: EditorView<any>, title: string, href: 
         pasteLink: string;
         pasteLinkWithTitle: (title: string) => string;
         placeholder: string;
+        primary: string;
         quote: string;
         removeLink: string;
         searchOrPasteLink: string;
@@ -59,6 +64,7 @@ declare const createAndInsertLink: (view: EditorView<any>, title: string, href: 
         tipNotice: string;
         warning: string;
         warningNotice: string;
+        white: string;
     };
     onCreateLink: (title: string) => Promise<string>;
     onShowToast?: ((message: string, code: string) => void) | undefined;

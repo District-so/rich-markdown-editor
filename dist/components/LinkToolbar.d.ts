@@ -3,7 +3,7 @@ import { EditorView } from "prosemirror-view";
 import { SearchResult } from "./LinkEditor";
 import baseDictionary from "../dictionary";
 declare type Props = {
-    isActive: boolean;
+    activeState: number;
     view: EditorView;
     tooltip: typeof React.Component | React.FC<any>;
     dictionary: typeof baseDictionary;
@@ -23,11 +23,11 @@ export default class LinkToolbar extends React.Component<Props> {
     componentWillUnmount(): void;
     handleClickOutside: (ev: any) => void;
     handleOnCreateLink: (title: string) => Promise<void>;
-    handleOnSelectLink: ({ href, title, }: {
+    handleOnSelectLink: ({ href, title, subtitle, image, }: {
         href: string;
         title: string;
-        from: number;
-        to: number;
+        subtitle?: string | undefined;
+        image?: string | undefined;
     }) => void;
     render(): JSX.Element;
 }

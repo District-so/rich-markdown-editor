@@ -14,11 +14,12 @@ declare type Props = {
     view: EditorView;
 };
 export default class SelectionToolbar extends React.Component<Props> {
-    handleOnCreateLink: (title: string) => Promise<void>;
-    handleOnSelectLink: ({ href, from, to, }: {
+    handleOnCreateLink: (title: string) => Promise<false | undefined>;
+    handleOnSelectLink: ({ href, title, subtitle, image }: {
         href: string;
-        from: number;
-        to: number;
+        title: string;
+        subtitle?: string | undefined;
+        image?: string | undefined;
     }) => void;
     render(): JSX.Element | null;
 }

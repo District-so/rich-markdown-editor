@@ -14,7 +14,8 @@ import {
   WarningIcon,
   InfoIcon,
   LinkIcon,
-  CheckmarkIcon
+  CheckmarkIcon,
+  DocumentIcon
 } from "outline-icons";
 import { MenuItem } from "../types";
 import baseDictionary from "../dictionary";
@@ -113,7 +114,19 @@ export default function blockMenuItems(
       title: dictionary.link,
       icon: LinkIcon,
       shortcut: `${mod} k`,
-      keywords: "link url uri href",
+      keywords: "link url uri href post",
+    },
+    {
+      name: "link_with_preview",
+      title: dictionary.linkPreview,
+      icon: DocumentIcon,
+      keywords: "link url uri href card preview post",
+    },
+    {
+      name: "button",
+      title: dictionary.button,
+      icon: DocumentIcon,
+      keywords: "link url uri href post button",
     },
     {
       name: "separator",

@@ -5,6 +5,8 @@ import embedsPlugin from "./embeds";
 import breakPlugin from "./breaks";
 import tablesPlugin from "./tables";
 import noticesPlugin from "./notices";
+import linkPreviewPlugin from "./link_previews";
+import buttonsPlugin from "./buttons";
 import underlinesPlugin from "./underlines";
 
 export default function rules({ embeds }) {
@@ -13,6 +15,8 @@ export default function rules({ embeds }) {
     html: false,
   })
     .use(embedsPlugin(embeds))
+    .use(linkPreviewPlugin)
+    .use(buttonsPlugin)
     .use(breakPlugin)
     .use(checkboxPlugin)
     .use(markPlugin({ delim: "==", mark: "mark" }))

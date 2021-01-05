@@ -105,7 +105,19 @@ class BlockMenu extends React.Component {
                 case "link": {
                     this.clearSearch();
                     this.props.onClose();
-                    this.props.onLinkToolbarOpen();
+                    this.props.onLinkToolbarOpen('link');
+                    return;
+                }
+                case "link_with_preview": {
+                    this.clearSearch();
+                    this.props.onClose();
+                    this.props.onLinkToolbarOpen('preview');
+                    return;
+                }
+                case "button": {
+                    this.clearSearch();
+                    this.props.onClose();
+                    this.props.onLinkToolbarOpen('button');
                     return;
                 }
                 default:

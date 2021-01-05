@@ -36,6 +36,7 @@ const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
 const Blockquote_1 = __importDefault(require("./nodes/Blockquote"));
 const BulletList_1 = __importDefault(require("./nodes/BulletList"));
+const Button_1 = __importDefault(require("./nodes/Button"));
 const CodeBlock_1 = __importDefault(require("./nodes/CodeBlock"));
 const CodeFence_1 = __importDefault(require("./nodes/CodeFence"));
 const CheckboxList_1 = __importDefault(require("./nodes/CheckboxList"));
@@ -46,6 +47,7 @@ const Heading_1 = __importDefault(require("./nodes/Heading"));
 const HorizontalRule_1 = __importDefault(require("./nodes/HorizontalRule"));
 const Image_1 = __importDefault(require("./nodes/Image"));
 const ListItem_1 = __importDefault(require("./nodes/ListItem"));
+const LinkPreview_1 = __importDefault(require("./nodes/LinkPreview"));
 const Notice_1 = __importDefault(require("./nodes/Notice"));
 const OrderedList_1 = __importDefault(require("./nodes/OrderedList"));
 const Paragraph_1 = __importDefault(require("./nodes/Paragraph"));
@@ -80,7 +82,7 @@ class RichMarkdownEditor extends React.PureComponent {
         super(...arguments);
         this.state = {
             blockMenuOpen: false,
-            linkMenuOpen: false,
+            linkMenuState: 0,
             blockMenuSearch: "",
         };
         this.value = () => {
@@ -105,11 +107,11 @@ class RichMarkdownEditor extends React.PureComponent {
                 onSave({ done: true });
             }
         };
-        this.handleOpenLinkMenu = () => {
-            this.setState({ linkMenuOpen: true });
+        this.handleOpenLinkMenu = (type) => {
+            this.setState({ linkMenuState: type == 'preview' ? 2 : (type == 'button' ? 3 : 1) });
         };
         this.handleCloseLinkMenu = () => {
-            this.setState({ linkMenuOpen: false });
+            this.setState({ linkMenuState: 0 });
         };
         this.handleOpenBlockMenu = (search) => {
             this.setState({ blockMenuOpen: true, blockMenuSearch: search });
@@ -176,7 +178,7 @@ class RichMarkdownEditor extends React.PureComponent {
                         React.createElement(StyledEditor, { readOnly: readOnly, readOnlyWriteCheckboxes: readOnlyWriteCheckboxes, ref: ref => (this.element = ref) }),
                         !readOnly && this.view && (React.createElement(React.Fragment, null,
                             React.createElement(SelectionToolbar_1.default, { view: this.view, dictionary: dictionary, commands: this.commands, isTemplate: this.props.template === true, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onCreateLink: this.props.onCreateLink, tooltip: tooltip }),
-                            React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, isActive: this.state.linkMenuOpen, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu, tooltip: tooltip }),
+                            React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, activeState: this.state.linkMenuState, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu, tooltip: tooltip }),
                             React.createElement(BlockMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, isActive: this.state.blockMenuOpen, search: this.state.blockMenuSearch, onClose: this.handleCloseBlockMenu, uploadImage: this.props.uploadImage, onLinkToolbarOpen: this.handleOpenLinkMenu, onImageUploadStart: this.props.onImageUploadStart, onImageUploadStop: this.props.onImageUploadStop, onShowToast: this.props.onShowToast, embeds: this.props.embeds })))))));
         };
     }
@@ -276,6 +278,17 @@ class RichMarkdownEditor extends React.PureComponent {
             new Underline_1.default(),
             new Link_1.default({
                 onKeyboardShortcut: this.handleOpenLinkMenu,
+                onClickLink: this.props.onClickLink,
+                onClickHashtag: this.props.onClickHashtag,
+                onHoverLink: this.props.onHoverLink,
+            }),
+            new LinkPreview_1.default({
+                onClickLink: this.props.onClickLink,
+                onClickHashtag: this.props.onClickHashtag,
+                onHoverLink: this.props.onHoverLink,
+            }),
+            new Button_1.default({
+                dictionary,
                 onClickLink: this.props.onClickLink,
                 onClickHashtag: this.props.onClickHashtag,
                 onHoverLink: this.props.onHoverLink,
@@ -794,7 +807,8 @@ const StyledEditor = styled_components_1.default("div") `
   }
 
   .code-block,
-  .notice-block {
+  .notice-block,
+  .btn-block {
     position: relative;
 
     select,

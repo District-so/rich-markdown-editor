@@ -12,7 +12,7 @@ declare type Props = {
     onImageUploadStart?: () => void;
     onImageUploadStop?: () => void;
     onShowToast?: (message: string, id: string) => void;
-    onLinkToolbarOpen: () => void;
+    onLinkToolbarOpen: (type: string) => void;
     onClose: () => void;
     embeds: EmbedDescriptor[];
 };

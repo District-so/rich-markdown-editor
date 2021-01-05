@@ -62,7 +62,7 @@ class LinkToolbar extends React.Component {
             dispatch(view.state.tr
                 .insertText(title, from, to)
                 .addMark(from, to + title.length, state.schema.marks.link_with_preview.create({ href })));
-            createAndInsertLink_1.default(view, title, href, {
+            createAndInsertLink_1.default(view, title, href, false, {
                 onCreateLink,
                 onShowToast,
                 dictionary,

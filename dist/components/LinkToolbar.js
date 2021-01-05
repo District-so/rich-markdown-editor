@@ -30,7 +30,7 @@ function isActive(props) {
     const { view } = props;
     const { selection } = view.state;
     const paragraph = view.domAtPos(selection.$from.pos);
-    return props.isActive && !!paragraph.node;
+    return (props.activeState > 0) && !!paragraph.node;
 }
 class LinkToolbar extends React.Component {
     constructor() {
@@ -59,25 +59,45 @@ class LinkToolbar extends React.Component {
             const { from, to } = state.selection;
             assert_1.default(from === to);
             const href = `creating#${title}…`;
-            dispatch(view.state.tr
-                .insertText(title, from, to)
-                .addMark(from, to + title.length, state.schema.marks.link.create({ href })));
-            createAndInsertLink_1.default(view, title, href, {
+            var is_button = false;
+            if (this.props.activeState == 1) {
+                dispatch(view.state.tr
+                    .insertText(title, from, to)
+                    .addMark(from, to + title.length, state.schema.marks.link.create({ href })));
+            }
+            else if (this.props.activeState == 3) {
+                is_button = true;
+                dispatch(view.state.tr
+                    .insertText(title, from, to)
+                    .setBlockType(from, to + title.length, state.schema.nodes.button, { href, title }));
+            }
+            createAndInsertLink_1.default(view, title, href, is_button, {
                 onCreateLink,
                 onShowToast,
                 dictionary,
             });
         };
-        this.handleOnSelectLink = ({ href, title, }) => {
+        this.handleOnSelectLink = ({ href, title, subtitle, image, }) => {
             const { view, onClose } = this.props;
             onClose();
             this.props.view.focus();
             const { dispatch, state } = view;
             const { from, to } = state.selection;
             assert_1.default(from === to);
-            dispatch(view.state.tr
-                .insertText(title, from, to)
-                .addMark(from, to + title.length, state.schema.marks.link.create({ href })));
+            if (this.props.activeState == 1 || (this.props.activeState == 2 && !subtitle && !image)) {
+                dispatch(view.state.tr
+                    .insertText(title, from, to)
+                    .addMark(from, to + title.length, state.schema.marks.link.create({ href })));
+            }
+            else if (this.props.activeState == 2) {
+                dispatch(view.state.tr
+                    .insert(from, state.schema.nodes.link_with_preview.create({ href, title, subtitle, image })));
+            }
+            else {
+                dispatch(view.state.tr
+                    .insertText(title, from, to)
+                    .setBlockType(from, to + title.length, state.schema.nodes.button, { href, title }));
+            }
         };
     }
     componentDidMount() {

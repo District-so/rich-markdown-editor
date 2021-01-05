@@ -7,6 +7,7 @@ export const base = {
   alignLeft: "Align left",
   alignRight: "Align right",
   bulletList: "Bulleted list",
+  button: "Button",
   checkboxList: "Todo list",
   codeBlock: "Code block",
   codeCopied: "Copied to clipboard",
@@ -16,6 +17,7 @@ export const base = {
   createNewDoc: "Create a new doc",
   danger: "Danger",
   dangerNotice: "Danger notice",
+  dark: "Dark",
   deleteColumn: "Delete column",
   deleteRow: "Delete row",
   deleteTable: "Delete table",
@@ -31,8 +33,10 @@ export const base = {
   imageUploadError: "Sorry, an error occurred uploading the image",
   info: "Info",
   infoNotice: "Notice Block",
+  light: "Light",
   link: "Link",
   linkCopied: "Link copied to clipboard",
+  linkPreview: "Post Link with Preview",
   mark: "Highlight",
   newLineEmpty: "Type '/' to insert…",
   newLineWithSlash: "Keep typing to filter…",
@@ -42,6 +46,7 @@ export const base = {
   pasteLink: "Paste a link…",
   pasteLinkWithTitle: (title: string) => `Paste a ${title} link…`,
   placeholder: "Placeholder",
+  primary: "Primary",
   quote: "Quote",
   removeLink: "Remove link",
   searchOrPasteLink: "Search or paste a link…",
@@ -57,6 +62,7 @@ export const base = {
   tipNotice: "Tip notice",
   warning: "Warning",
   warningNotice: "Warning notice",
+  white: "White",
 };
 
 export default base;

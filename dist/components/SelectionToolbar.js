@@ -33,6 +33,7 @@ const LinkEditor_1 = __importDefault(require("./LinkEditor"));
 const Menu_1 = __importDefault(require("./Menu"));
 const isMarkActive_1 = __importDefault(require("../queries/isMarkActive"));
 const getMarkRange_1 = __importDefault(require("../queries/getMarkRange"));
+const getNodeRange_1 = __importDefault(require("../queries/getNodeRange"));
 const isNodeActive_1 = __importDefault(require("../queries/isNodeActive"));
 const getColumnIndex_1 = __importDefault(require("../queries/getColumnIndex"));
 const getRowIndex_1 = __importDefault(require("../queries/getRowIndex"));
@@ -40,7 +41,7 @@ const createAndInsertLink_1 = __importDefault(require("../commands/createAndInse
 function isActive(props) {
     const { view } = props;
     const { selection } = view.state;
-    return selection && !selection.empty && !selection.node;
+    return selection && !selection.empty;
 }
 class SelectionToolbar extends React.Component {
     constructor() {
@@ -54,23 +55,43 @@ class SelectionToolbar extends React.Component {
             const { from, to } = state.selection;
             assert_1.default(from !== to);
             const href = `creating#${title}…`;
-            const markType = state.schema.marks.link;
-            dispatch(view.state.tr
-                .removeMark(from, to, markType)
-                .addMark(from, to, markType.create({ href })));
-            createAndInsertLink_1.default(view, title, href, {
+            const is_button = isNodeActive_1.default(state.schema.nodes.button)(state);
+            if (is_button) {
+                const range = getNodeRange_1.default(state.schema.nodes.button)(state);
+                if (!range)
+                    return false;
+                dispatch(view.state.tr
+                    .setBlockType(from, from + title.length, state.schema.nodes.button, { href, title, style: range.node.attrs.style }));
+            }
+            else {
+                const markType = state.schema.marks.link;
+                dispatch(state.tr
+                    .removeMark(from, to, markType)
+                    .addMark(from, to, markType.create({ href })));
+            }
+            createAndInsertLink_1.default(view, title, href, is_button, {
                 onCreateLink,
                 onShowToast,
                 dictionary,
             });
         };
-        this.handleOnSelectLink = ({ href, from, to, }) => {
+        this.handleOnSelectLink = ({ href, title, subtitle, image }) => {
             const { view } = this.props;
             const { state, dispatch } = view;
-            const markType = state.schema.marks.link;
-            dispatch(state.tr
-                .removeMark(from, to, markType)
-                .addMark(from, to, markType.create({ href })));
+            const { from, to } = state.selection;
+            const is_button = isNodeActive_1.default(state.schema.nodes.button)(state);
+            if (is_button) {
+                const range = getNodeRange_1.default(state.schema.nodes.button)(state);
+                const effectiveTitle = range.node.attrs.title ? range.node.attrs.title : title;
+                dispatch(view.state.tr
+                    .setNodeMarkup(range.from, undefined, { href, title: effectiveTitle, style: range.node.attrs.style }));
+            }
+            else {
+                const markType = state.schema.marks.link;
+                dispatch(state.tr
+                    .removeMark(from, to, markType)
+                    .addMark(from, to, markType.create({ href })));
+            }
         };
     }
     render() {
@@ -85,8 +106,9 @@ class SelectionToolbar extends React.Component {
         const colIndex = getColumnIndex_1.default(state.selection);
         const rowIndex = getRowIndex_1.default(state.selection);
         const isTableSelection = colIndex !== undefined && rowIndex !== undefined;
-        const link = isMarkActive_1.default(state.schema.marks.link)(state);
-        const range = getMarkRange_1.default(selection.$from, state.schema.marks.link);
+        const is_link = isMarkActive_1.default(state.schema.marks.link)(state);
+        const is_button = isNodeActive_1.default(state.schema.nodes.button)(state);
+        const range = is_link ? getMarkRange_1.default(selection.$from, state.schema.marks.link) : getNodeRange_1.default(state.schema.nodes.button)(state);
         let items = [];
         if (isTableSelection) {
             items = table_1.default(dictionary);
@@ -104,7 +126,7 @@ class SelectionToolbar extends React.Component {
             return null;
         }
         return (React.createElement(react_portal_1.Portal, null,
-            React.createElement(FloatingToolbar_1.default, { view: view, active: isActive(this.props) }, link && range ? (React.createElement(LinkEditor_1.default, Object.assign({ dictionary: dictionary, mark: range.mark, from: range.from, to: range.to, onCreateLink: onCreateLink ? this.handleOnCreateLink : undefined, onSelectLink: this.handleOnSelectLink }, rest))) : (React.createElement(Menu_1.default, Object.assign({ items: items }, rest))))));
+            React.createElement(FloatingToolbar_1.default, { view: view, active: isActive(this.props) }, (is_link && range) || is_button ? (React.createElement(LinkEditor_1.default, Object.assign({ dictionary: dictionary, node: range.node, mark: range.mark, from: range.from, to: range.to, onCreateLink: onCreateLink ? this.handleOnCreateLink : undefined, onSelectLink: this.handleOnSelectLink }, rest))) : (React.createElement(Menu_1.default, Object.assign({ items: items }, rest))))));
     }
 }
 exports.default = SelectionToolbar;

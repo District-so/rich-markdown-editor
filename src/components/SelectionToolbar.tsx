@@ -11,6 +11,7 @@ import LinkEditor, { SearchResult } from "./LinkEditor";
 import Menu from "./Menu";
 import isMarkActive from "../queries/isMarkActive";
 import getMarkRange from "../queries/getMarkRange";
+import getNodeRange from "../queries/getNodeRange";
 import isNodeActive from "../queries/isNodeActive";
 import getColumnIndex from "../queries/getColumnIndex";
 import getRowIndex from "../queries/getRowIndex";
@@ -34,7 +35,7 @@ function isActive(props) {
   const { view } = props;
   const { selection } = view.state;
 
-  return selection && !selection.empty && !selection.node;
+  return selection && !selection.empty;
 }
 
 export default class SelectionToolbar extends React.Component<Props> {
@@ -50,16 +51,31 @@ export default class SelectionToolbar extends React.Component<Props> {
     assert(from !== to);
 
     const href = `creating#${title}…`;
-    const markType = state.schema.marks.link;
-
+    const is_button = isNodeActive(state.schema.nodes.button)(state);
+    
     // Insert a placeholder link
-    dispatch(
-      view.state.tr
-        .removeMark(from, to, markType)
-        .addMark(from, to, markType.create({ href }))
-    );
+    if(is_button) {
+      const range = getNodeRange(state.schema.nodes.button)(state)
+      if (!range) return false;
+      dispatch(
+        view.state.tr
+          .setBlockType(
+            from,
+            from + title.length,
+            state.schema.nodes.button,
+            { href, title, style: range.node.attrs.style }
+          )
+      );
+    } else {
+      const markType = state.schema.marks.link;
+      dispatch(
+        state.tr
+          .removeMark(from, to, markType)
+          .addMark(from, to, markType.create({ href }))
+      );
+    }
 
-    createAndInsertLink(view, title, href, {
+    createAndInsertLink(view, title, href, is_button, {
       onCreateLink,
       onShowToast,
       dictionary,
@@ -68,23 +84,41 @@ export default class SelectionToolbar extends React.Component<Props> {
 
   handleOnSelectLink = ({
     href,
-    from,
-    to,
+    title,
+    subtitle,
+    image
   }: {
     href: string;
-    from: number;
-    to: number;
+    title: string;
+    subtitle?: string;
+    image?: string;
   }): void => {
     const { view } = this.props;
     const { state, dispatch } = view;
+    const { from, to } = state.selection;
 
-    const markType = state.schema.marks.link;
+    const is_button = isNodeActive(state.schema.nodes.button)(state);
 
-    dispatch(
-      state.tr
-        .removeMark(from, to, markType)
-        .addMark(from, to, markType.create({ href }))
-    );
+    if(is_button) {
+      const range = getNodeRange(state.schema.nodes.button)(state)
+      const effectiveTitle = range.node.attrs.title ? range.node.attrs.title : title;
+      dispatch(
+        view.state.tr
+          .setNodeMarkup(
+            range.from,
+            undefined,
+            { href, title: effectiveTitle, style: range.node.attrs.style }
+          )
+      );
+    } else {
+      const markType = state.schema.marks.link;
+      dispatch(
+        state.tr
+          .removeMark(from, to, markType)
+          .addMark(from, to, markType.create({ href }))
+      );
+    }
+    
   };
 
   render() {
@@ -102,8 +136,9 @@ export default class SelectionToolbar extends React.Component<Props> {
     const colIndex = getColumnIndex(state.selection);
     const rowIndex = getRowIndex(state.selection);
     const isTableSelection = colIndex !== undefined && rowIndex !== undefined;
-    const link = isMarkActive(state.schema.marks.link)(state);
-    const range = getMarkRange(selection.$from, state.schema.marks.link);
+    const is_link = isMarkActive(state.schema.marks.link)(state);
+    const is_button = isNodeActive(state.schema.nodes.button)(state);
+    const range = is_link ? getMarkRange(selection.$from, state.schema.marks.link) : getNodeRange(state.schema.nodes.button)(state);
 
     let items: MenuItem[] = [];
     if (isTableSelection) {
@@ -123,9 +158,10 @@ export default class SelectionToolbar extends React.Component<Props> {
     return (
       <Portal>
         <FloatingToolbar view={view} active={isActive(this.props)}>
-          {link && range ? (
+          {(is_link && range) || is_button ? (
             <LinkEditor
               dictionary={dictionary}
+              node={range.node}
               mark={range.mark}
               from={range.from}
               to={range.to}

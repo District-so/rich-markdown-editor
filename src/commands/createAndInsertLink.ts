@@ -32,10 +32,33 @@ function findPlaceholderLink(doc, href) {
   return result;
 }
 
+function findPlaceholderButton(state, href) {
+  let result;
+
+  function findButtonNodes(node, pos = 0) {
+    // get text nodes
+    if (node.type == state.schema.nodes.button) {
+      if(node.attrs.href === href){
+        result = { node, pos };
+      }
+    }
+
+    if (!node.content.size) {
+      return;
+    }
+
+    node.descendants(findButtonNodes);
+  }
+
+  findButtonNodes(state.doc);
+  return result;
+}
+
 const createAndInsertLink = async function(
   view: EditorView,
   title: string,
   href: string,
+  is_button: boolean,
   options: {
     dictionary: typeof baseDictionary;
     onCreateLink: (title: string) => Promise<string>;
@@ -47,23 +70,44 @@ const createAndInsertLink = async function(
 
   try {
     const url = await onCreateLink(title);
-    const result = findPlaceholderLink(view.state.doc, href);
+    if(is_button){
+      const result = findPlaceholderButton(state, href);
+      if (!result) return;
 
-    if (!result) return;
+      dispatch(
+        view.state.tr
+          .setBlockType(
+            result.pos,
+            result.pos + result.node.attrs.title,
+            state.schema.nodes.button,
+            { 
+              href: url, 
+              title: result.node.attrs.title, 
+              style: result.node.attrs.style 
+            }
+          )
+      );
 
-    dispatch(
-      view.state.tr
-        .removeMark(
-          result.pos,
-          result.pos + result.node.nodeSize,
-          state.schema.marks.link
-        )
-        .addMark(
-          result.pos,
-          result.pos + result.node.nodeSize,
-          state.schema.marks.link.create({ href: url })
-        )
-    );
+    } else {
+      const result = findPlaceholderLink(view.state.doc, href);
+
+      if (!result) return;
+
+      dispatch(
+        view.state.tr
+          .removeMark(
+            result.pos,
+            result.pos + result.node.nodeSize,
+            state.schema.marks.link
+          )
+          .addMark(
+            result.pos,
+            result.pos + result.node.nodeSize,
+            state.schema.marks.link.create({ href: url })
+          )
+      );
+    }
+    
   } catch (err) {
     const result = findPlaceholderLink(view.state.doc, href);
     if (!result) return;

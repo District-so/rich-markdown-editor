@@ -23,17 +23,46 @@ function findPlaceholderLink(doc, href) {
     findLinks(doc);
     return result;
 }
-const createAndInsertLink = async function (view, title, href, options) {
+function findPlaceholderButton(state, href) {
+    let result;
+    function findButtonNodes(node, pos = 0) {
+        if (node.type == state.schema.nodes.button) {
+            if (node.attrs.href === href) {
+                result = { node, pos };
+            }
+        }
+        if (!node.content.size) {
+            return;
+        }
+        node.descendants(findButtonNodes);
+    }
+    findButtonNodes(state.doc);
+    return result;
+}
+const createAndInsertLink = async function (view, title, href, is_button, options) {
     const { dispatch, state } = view;
     const { onCreateLink, onShowToast } = options;
     try {
         const url = await onCreateLink(title);
-        const result = findPlaceholderLink(view.state.doc, href);
-        if (!result)
-            return;
-        dispatch(view.state.tr
-            .removeMark(result.pos, result.pos + result.node.nodeSize, state.schema.marks.link)
-            .addMark(result.pos, result.pos + result.node.nodeSize, state.schema.marks.link.create({ href: url })));
+        if (is_button) {
+            const result = findPlaceholderButton(state, href);
+            if (!result)
+                return;
+            dispatch(view.state.tr
+                .setBlockType(result.pos, result.pos + result.node.attrs.title, state.schema.nodes.button, {
+                href: url,
+                title: result.node.attrs.title,
+                style: result.node.attrs.style
+            }));
+        }
+        else {
+            const result = findPlaceholderLink(view.state.doc, href);
+            if (!result)
+                return;
+            dispatch(view.state.tr
+                .removeMark(result.pos, result.pos + result.node.nodeSize, state.schema.marks.link)
+                .addMark(result.pos, result.pos + result.node.nodeSize, state.schema.marks.link.create({ href: url })));
+        }
     }
     catch (err) {
         const result = findPlaceholderLink(view.state.doc, href);

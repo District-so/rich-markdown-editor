@@ -7,7 +7,7 @@ const prosemirror_commands_1 = require("prosemirror-commands");
 const prosemirror_state_1 = require("prosemirror-state");
 const prosemirror_inputrules_1 = require("prosemirror-inputrules");
 const Node_1 = __importDefault(require("./Node"));
-const LINK_PREVIEW_INPUT_REGEX = /\{\[(.+)\],\s?\[(.*)\],\s?\[(.*)\]\}\((\S+)\)/;
+const LINK_PREVIEW_INPUT_REGEX = /\[\{\[(.+)\],\s?\[(.*)\],\s?\[(.*)\]\}\]\((\S+)\)/;
 class LinkPreview extends Node_1.default {
     get name() {
         return "link_with_preview";
@@ -28,7 +28,7 @@ class LinkPreview extends Node_1.default {
                     default: "",
                 },
             },
-            content: "block+",
+            content: "inline*",
             group: "block",
             inclusive: false,
             draggable: true,
@@ -83,11 +83,10 @@ class LinkPreview extends Node_1.default {
     inputRules({ type }) {
         return [
             new prosemirror_inputrules_1.InputRule(LINK_PREVIEW_INPUT_REGEX, (state, match, start, end) => {
-                console.log('match', match);
                 const [okay, title, subtitle, image, href] = match;
                 const { tr } = state;
                 if (okay) {
-                    tr.replaceWith(start, end, this.editor.schema.text(alt)).addMark(start, start + alt.length, type.create({ href }));
+                    tr.replaceWith(start, end, this.editor.schema.text(title)).addMark(start, start + title.length, type.create({ href }));
                 }
                 return tr;
             }),
@@ -143,13 +142,13 @@ class LinkPreview extends Node_1.default {
         ];
     }
     toMarkdown(state, node) {
-        state.write("{[" + node.attrs.title + "], [" + node.attrs.subtitle + "], [" + node.attrs.image + "]}(" + node.attrs.href + ")");
         state.ensureNewLine();
-        state.closeBlock(node);
+        state.write("[{[" + node.attrs.title + "], [" + node.attrs.subtitle + "], [" + node.attrs.image + "]}](" + node.attrs.href + ")");
+        state.write("\n\n");
     }
     parseMarkdown() {
         return {
-            block: "link_with_preview",
+            node: "link_with_preview",
             getAttrs: tok => ({
                 href: tok.attrGet("href"),
                 title: tok.attrGet("title") || null,

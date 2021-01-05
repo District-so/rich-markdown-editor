@@ -92,7 +92,19 @@ function blockMenuItems(dictionary) {
             title: dictionary.link,
             icon: outline_icons_1.LinkIcon,
             shortcut: `${mod} k`,
-            keywords: "link url uri href",
+            keywords: "link url uri href post",
+        },
+        {
+            name: "link_with_preview",
+            title: dictionary.linkPreview,
+            icon: outline_icons_1.DocumentIcon,
+            keywords: "link url uri href card preview post",
+        },
+        {
+            name: "button",
+            title: dictionary.button,
+            icon: outline_icons_1.DocumentIcon,
+            keywords: "link url uri href post button",
         },
         {
             name: "separator",

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { setTextSelection } from "prosemirror-utils";
 import { EditorView } from "prosemirror-view";
-import { Mark } from "prosemirror-model";
+import { Mark, Node } from "prosemirror-model";
 import {
   DocumentIcon,
   CloseIcon,
@@ -21,11 +21,13 @@ import baseDictionary from "../dictionary";
 export type SearchResult = {
   title: string;
   subtitle?: string;
+  image?: string;
   url: string;
 };
 
 type Props = {
   mark?: Mark;
+  node?: Node;
   from: number;
   to: number;
   tooltip: typeof React.Component | React.FC<any>;
@@ -36,8 +38,8 @@ type Props = {
   onSelectLink: (options: {
     href: string;
     title?: string;
-    from: number;
-    to: number;
+    subtitle?: string;
+    image?: string;
   }) => void;
   onClickLink: (href: string, event: MouseEvent) => void;
   onShowToast?: (message: string, code: string) => void;
@@ -67,6 +69,8 @@ class LinkEditor extends React.Component<Props, State> {
   };
 
   get href(): string {
+    if(this.props.node)
+      return this.props.node.attrs.href;
     return this.props.mark ? this.props.mark.attrs.href : "";
   }
 
@@ -101,7 +105,7 @@ class LinkEditor extends React.Component<Props, State> {
     this.save(href, href);
   };
 
-  save = (href: string, title?: string): void => {
+  save = (href: string, title?: string, subtitle?: string, image?: string): void => {
     href = href.trim();
 
     if (href.length === 0) return;
@@ -115,7 +119,7 @@ class LinkEditor extends React.Component<Props, State> {
       href = `https://${href}`;
     }
 
-    this.props.onSelectLink({ href, title, from, to });
+    this.props.onSelectLink({ href, title, subtitle, image });
   };
 
   handleKeyDown = (event: React.KeyboardEvent): void => {
@@ -129,11 +133,15 @@ class LinkEditor extends React.Component<Props, State> {
         if (selectedIndex >= 0) {
           const result = results[selectedIndex];
           if (result) {
-            this.save(result.url, result.title);
+            this.save(result.url, result.title, result.subtitle, result.image);
           } else if (onCreateLink && selectedIndex === results.length) {
             this.handleCreateLink(this.suggestedLinkTitle);
           }
         } else {
+          // if its a Post Preview let's not allow one to create third-party links
+          if(!this.props.node || this.props.node.type != this.props.view.state.schema.nodes.link_with_preview){
+            return;
+          }
           // saves the raw input as href
           this.save(value, value);
         }
@@ -248,9 +256,9 @@ class LinkEditor extends React.Component<Props, State> {
     view.focus();
   };
 
-  handleSelectLink = (url: string, title: string) => event => {
+  handleSelectLink = (url: string, title: string, subtitle?: string, image?: string) => event => {
     event.preventDefault();
-    this.save(url, title);
+    this.save(url, title, subtitle, image);
 
     if (this.initialSelectionLength) {
       this.moveSelectionToEnd();
@@ -307,9 +315,11 @@ class LinkEditor extends React.Component<Props, State> {
         </ToolbarButton>
         <ToolbarButton onClick={this.handleRemoveLink}>
           <Tooltip tooltip={dictionary.removeLink} placement="top">
-            {this.initialValue ? (
-              <TrashIcon color={theme.toolbarItem} />
-            ) : (
+            {this.initialValue ? (<>
+              {(!this.props.node || this.props.node.type != this.props.view.state.schema.nodes.button) && (
+                <TrashIcon color={theme.toolbarItem} />
+              )}
+            </>) : (
               <CloseIcon color={theme.toolbarItem} />
             )}
           </Tooltip>
@@ -324,7 +334,7 @@ class LinkEditor extends React.Component<Props, State> {
                 subtitle={result.subtitle}
                 icon={<DocumentIcon color={theme.toolbarItem} />}
                 onMouseOver={() => this.handleFocusLink(index)}
-                onClick={this.handleSelectLink(result.url, result.title)}
+                onClick={this.handleSelectLink(result.url, result.title, result.subtitle, result.image)}
                 selected={index === selectedIndex}
               />
             ))}

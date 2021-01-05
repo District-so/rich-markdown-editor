@@ -1,33 +1,11 @@
 import { toggleMark } from "prosemirror-commands";
 import { Plugin } from "prosemirror-state";
 import { InputRule } from "prosemirror-inputrules";
-import Mark from "./Mark";
+import Node from "./Node";
 
-const LINK_INPUT_REGEX = /\[(.+)]\((\S+)\)/;
+const LINK_PREVIEW_INPUT_REGEX = /\[\{\[(.+)\],\s?\[(.*)\],\s?\[(.*)\]\}\]\((\S+)\)/;
 
-function isPlainURL(link, parent, index, side) {
-  if (link.attrs.title || !/^\w+:/.test(link.attrs.href)) {
-    return false;
-  }
-
-  const content = parent.child(index + (side < 0 ? -1 : 0));
-  if (
-    !content.isText ||
-    content.text !== link.attrs.href ||
-    content.marks[content.marks.length - 1] !== link
-  ) {
-    return false;
-  }
-
-  if (index === (side < 0 ? 1 : parent.childCount - 1)) {
-    return true;
-  }
-
-  const next = parent.child(index + (side < 0 ? -2 : 1));
-  return !link.isInSet(next.marks);
-}
-
-export default class LinkPreview extends Mark {
+export default class LinkPreview extends Node {
   get name() {
     return "link_with_preview";
   }
@@ -38,6 +16,9 @@ export default class LinkPreview extends Mark {
         href: {
           default: "",
         },
+        title: {
+          default: "",
+        },
         subtitle: {
           default: "",
         },
@@ -45,23 +26,32 @@ export default class LinkPreview extends Mark {
           default: "",
         },
       },
+      content: "inline*",
+      group: "block",
       inclusive: false,
+      draggable: true,
       parseDOM: [
         {
           tag: "a[href]",
           getAttrs: (dom: HTMLElement) => ({
             href: dom.getAttribute("href"),
+            title: dom.getAttribute("title"),
             subtitle: dom.getAttribute("subtitle"),
             image: dom.getAttribute("image"),
           }),
         },
       ],
       toDOM: node => {
+        const title = document.createElement("div");
+        title.innerHTML = node.attrs.title;
+        title.className = "title";
         const subtitle = document.createElement("p");
         subtitle.innerHTML = node.attrs.subtitle;
+        subtitle.className = 'post-excerpt'
         if(node.attrs.image){
           const image = document.createElement("img");
           image.src = node.attrs.image;
+          image.className = 'post-image'
           return [
             "a",
             {
@@ -70,7 +60,7 @@ export default class LinkPreview extends Mark {
               class: "card post-card"
             },
             image,
-            ["div", { class: "post-text-content"}, ["div", { class: "title" }, 0], subtitle],
+            ["div", { class: "post-text-content"}, title, subtitle],
           ]
         } else {
           return [
@@ -80,7 +70,7 @@ export default class LinkPreview extends Mark {
               rel: "noopener noreferrer nofollow",
               class: "card post-card"
             },
-            ["div", { class: "title"}, 0],
+            title,
             subtitle,
           ]
         }
@@ -90,14 +80,14 @@ export default class LinkPreview extends Mark {
 
   inputRules({ type }) {
     return [
-      new InputRule(LINK_INPUT_REGEX, (state, match, start, end) => {
-        const [okay, alt, href] = match;
+      new InputRule(LINK_PREVIEW_INPUT_REGEX, (state, match, start, end) => {
+        const [okay, title, subtitle, image, href] = match;
         const { tr } = state;
 
         if (okay) {
-          tr.replaceWith(start, end, this.editor.schema.text(alt)).addMark(
+          tr.replaceWith(start, end, this.editor.schema.text(title)).addMark(
             start,
-            start + alt.length,
+            start + title.length,
             type.create({ href })
           );
         }
@@ -109,19 +99,6 @@ export default class LinkPreview extends Mark {
 
   commands({ type }) {
     return ({ href } = { href: "" }) => toggleMark(type, { href });
-  }
-
-  keys({ type }) {
-    return {
-      "Mod-k": (state, dispatch) => {
-        if (state.selection.empty) {
-          this.options.onKeyboardShortcut();
-          return true;
-        }
-
-        return toggleMark(type, { href: "" })(state, dispatch);
-      },
-    };
   }
 
   get plugins() {
@@ -181,28 +158,20 @@ export default class LinkPreview extends Mark {
     ];
   }
 
-  get toMarkdown() {
-    return {
-      open(_state, mark, parent, index) {
-        return isPlainURL(mark, parent, index, 1) ? "<" : "[";
-      },
-      close(state, mark, parent, index) {
-        return isPlainURL(mark, parent, index, -1)
-          ? ">"
-          : "](" +
-              state.esc(mark.attrs.href) +
-              (mark.attrs.title ? " " + state.quote(mark.attrs.title) : "") +
-              ")";
-      },
-    };
+  toMarkdown(state, node) {
+    state.ensureNewLine();
+    state.write("[{[" + node.attrs.title + "], [" + node.attrs.subtitle + "], [" + node.attrs.image + "]}]("+ node.attrs.href +")");
+    state.write("\n\n");
   }
 
   parseMarkdown() {
     return {
-      mark: "link_with_preview",
+      node: "link_with_preview",
       getAttrs: tok => ({
         href: tok.attrGet("href"),
         title: tok.attrGet("title") || null,
+        subtitle: tok.attrGet("subtitle") || null,
+        image: tok.attrGet("image") || null,
       }),
     };
   }

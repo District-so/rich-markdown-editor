@@ -81,7 +81,7 @@ export default class LinkToolbar extends React.Component<Props> {
         )
     );
 
-    createAndInsertLink(view, title, href, {
+    createAndInsertLink(view, title, href, false, {
       onCreateLink,
       onShowToast,
       dictionary,
@@ -109,16 +109,6 @@ export default class LinkToolbar extends React.Component<Props> {
     const { dispatch, state } = view;
     const { from, to } = state.selection;
     assert(from === to);
-
-    // dispatch(
-    //   view.state.tr
-    //     .insertText(title, from, to)
-    //     .addMark(
-    //       from,
-    //       to + title.length,
-    //       state.schema.marks.link_with_preview.create({ href, subtitle, image })
-    //     )
-    // );
 
     dispatch(
       view.state.tr

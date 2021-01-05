@@ -7,6 +7,7 @@ export declare const base: {
     alignLeft: string;
     alignRight: string;
     bulletList: string;
+    button: string;
     checkboxList: string;
     codeBlock: string;
     codeCopied: string;
@@ -16,6 +17,7 @@ export declare const base: {
     createNewDoc: string;
     danger: string;
     dangerNotice: string;
+    dark: string;
     deleteColumn: string;
     deleteRow: string;
     deleteTable: string;
@@ -31,8 +33,10 @@ export declare const base: {
     imageUploadError: string;
     info: string;
     infoNotice: string;
+    light: string;
     link: string;
     linkCopied: string;
+    linkPreview: string;
     mark: string;
     newLineEmpty: string;
     newLineWithSlash: string;
@@ -42,6 +46,7 @@ export declare const base: {
     pasteLink: string;
     pasteLinkWithTitle: (title: string) => string;
     placeholder: string;
+    primary: string;
     quote: string;
     removeLink: string;
     searchOrPasteLink: string;
@@ -57,6 +62,7 @@ export declare const base: {
     tipNotice: string;
     warning: string;
     warningNotice: string;
+    white: string;
 };
 export default base;
 //# sourceMappingURL=dictionary.d.ts.map

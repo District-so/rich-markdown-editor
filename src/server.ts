@@ -15,6 +15,8 @@ import HardBreak from "./nodes/HardBreak";
 import Heading from "./nodes/Heading";
 import HorizontalRule from "./nodes/HorizontalRule";
 import Image from "./nodes/Image";
+import LinkPreview from "./nodes/LinkPreview";
+import Button from "./nodes/Button";
 import ListItem from "./nodes/ListItem";
 import Notice from "./nodes/Notice";
 import OrderedList from "./nodes/OrderedList";
@@ -60,6 +62,8 @@ const extensions = new ExtensionManager([
   new Highlight(),
   new Italic(),
   new Link(),
+  new Button(),
+  new LinkPreview(),
   new Strikethrough(),
   new TemplatePlaceholder(),
   new Underline(),
