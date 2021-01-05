@@ -732,7 +732,7 @@ const StyledEditor = styled_components_1.default("div") `
     margin: 0;
   }
 
-  a {
+  a:not(.btn) {
     color: ${props => props.theme.link};
   }
 

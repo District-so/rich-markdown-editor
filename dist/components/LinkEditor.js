@@ -72,9 +72,6 @@ class LinkEditor extends React.Component {
                         }
                     }
                     else {
-                        if (!this.props.node || this.props.node.type != this.props.view.state.schema.nodes.link_with_preview) {
-                            return;
-                        }
                         this.save(value, value);
                     }
                     if (this.initialSelectionLength) {

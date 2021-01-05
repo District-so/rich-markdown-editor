@@ -244,21 +244,6 @@ const ButtonWrapper = styled_components_1.default.div `
   padding-botton: 1.5rem;
 `;
 const ButtonTitle = styled_components_1.default.a `
-  border: 0;
   
-  padding: 2px 0;
-  line-height: 16px;
-  text-align: center;
-  width: 100%;
-  min-height: 1em;
-  outline: none;
-  background: none;
-  resize: none;
-
-  &:empty:before {
-    color: ${props => props.theme.placeholder};
-    content: "Write a title";
-    pointer-events: none;
-  }
 `;
 //# sourceMappingURL=Button.js.map
