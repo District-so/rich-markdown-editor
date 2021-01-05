@@ -946,7 +946,7 @@ const StyledEditor = styled("div")<{
     margin: 0;
   }
 
-  a {
+  a:not(.btn) {
     color: ${props => props.theme.link};
   }
 

@@ -138,10 +138,6 @@ class LinkEditor extends React.Component<Props, State> {
             this.handleCreateLink(this.suggestedLinkTitle);
           }
         } else {
-          // if its a Post Preview let's not allow one to create third-party links
-          if(!this.props.node || this.props.node.type != this.props.view.state.schema.nodes.link_with_preview){
-            return;
-          }
           // saves the raw input as href
           this.save(value, value);
         }
