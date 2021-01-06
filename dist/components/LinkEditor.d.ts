@@ -4,8 +4,8 @@ import { Mark, Node } from "prosemirror-model";
 import theme from "../theme";
 import baseDictionary from "../dictionary";
 export declare type SearchResult = {
-    id?: string;
     title: string;
+    id?: string;
     subtitle?: string;
     image?: string;
     url: string;
@@ -22,8 +22,8 @@ declare type Props = {
     onCreateLink?: (title: string) => Promise<void>;
     onSearchLink?: (term: string) => Promise<SearchResult[]>;
     onSelectLink: (options: {
-        id?: string;
         href: string;
+        id?: string;
         title?: string;
         subtitle?: string;
         image?: string;

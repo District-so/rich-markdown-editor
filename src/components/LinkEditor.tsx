@@ -19,8 +19,8 @@ import LinkSearchResult from "./LinkSearchResult";
 import baseDictionary from "../dictionary";
 
 export type SearchResult = {
-  id?: string;
   title: string;
+  id?: string;
   subtitle?: string;
   image?: string;
   url: string;
