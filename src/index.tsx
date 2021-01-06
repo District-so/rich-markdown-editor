@@ -950,7 +950,7 @@ const StyledEditor = styled("div")<{
     color: ${props => props.theme.link};
   }
 
-  a:hover {
+  a:hover:not(.btn) {
     text-decoration: ${props => (props.readOnly ? "underline" : "none")};
   }
 
