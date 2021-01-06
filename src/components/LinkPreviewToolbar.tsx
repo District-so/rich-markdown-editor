@@ -90,16 +90,18 @@ export default class LinkToolbar extends React.Component<Props> {
 
   handleOnSelectLink = ({
     href,
+    id,
     title,
     subtitle,
     image,
+    event
   }: {
     href: string;
-    title: string;
+    id?: string;
+    title?: string;
     subtitle?: string;
     image?: string;
-    from: number;
-    to: number;
+    event?: any;
   }) => {
     const { view, onClose } = this.props;
 
@@ -114,7 +116,7 @@ export default class LinkToolbar extends React.Component<Props> {
       view.state.tr
         .insert(
           from,
-          state.schema.nodes.link_with_preview.create({ href, title, subtitle, image })
+          state.schema.nodes.link_with_preview.create({ href, id, title, subtitle, image, event })
         )
     )
   };

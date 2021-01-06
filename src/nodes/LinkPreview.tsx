@@ -16,6 +16,9 @@ export default class LinkPreview extends Node {
         href: {
           default: "",
         },
+        id: {
+          default: "",
+        },
         title: {
           default: "",
         },
@@ -25,6 +28,9 @@ export default class LinkPreview extends Node {
         image: {
           default: "",
         },
+        event: {
+          default: null,
+        }
       },
       content: "inline*",
       group: "block",
@@ -35,9 +41,11 @@ export default class LinkPreview extends Node {
           tag: "a[href]",
           getAttrs: (dom: HTMLElement) => ({
             href: dom.getAttribute("href"),
+            id: dom.getAttribute("id"),
             title: dom.getAttribute("title"),
             subtitle: dom.getAttribute("subtitle"),
             image: dom.getAttribute("image"),
+            event: dom.getAttribute("event"),
           }),
         },
       ],
@@ -47,33 +55,49 @@ export default class LinkPreview extends Node {
         title.className = "title";
         const subtitle = document.createElement("p");
         subtitle.innerHTML = node.attrs.subtitle;
-        subtitle.className = 'subtitle'
+        subtitle.className = 'subtitle';
+
+        var result = [
+            "a",
+            {
+              //data-id: node.attrs.id,
+              href: node.attrs.href,
+              rel: "noopener noreferrer nofollow",
+              class: "card post-card"
+            },
+        ];
         if(node.attrs.image){
           const image = document.createElement("img");
           image.src = node.attrs.image;
           image.className = 'post-image'
-          return [
-            "a",
-            {
-              href: node.attrs.href,
-              rel: "noopener noreferrer nofollow",
-              class: "card post-card"
-            },
-            image,
-            ["div", { class: "post-text-content"}, title, subtitle],
-          ]
-        } else {
-          return [
-            "a",
-            {
-              href: node.attrs.href,
-              rel: "noopener noreferrer nofollow",
-              class: "card post-card"
-            },
-            title,
-            subtitle,
-          ]
+          result.push(image);
         }
+        if(node.attrs.event && node.attrs.event.day && node.attrs.event.month){
+          const day = document.createElement("label");
+          day.innerHTML = node.attrs.event.day.toString();
+          day.className = "event-day text-uppercase mb-1 text-sm";
+          const month = document.createElement("label");
+          month.innerHTML = node.attrs.event.month;
+          month.className = "event-month text-primary";
+          result.push(["div", 
+            { class: "post-text-content"},
+            [
+              "div",
+              { class: "d-flex post-event-title" },
+              [
+                "div", 
+                { class: "event-block alert bg-light text-center px-2 pt-1 pb-0 mr-3 mb-0" },
+                day,
+                month 
+              ],
+              title,
+            ],
+            subtitle
+          ])
+        } else {
+          result.push(["div", { class: "post-text-content"}, title, subtitle]);
+        }
+        return result;
       },
     };
   }
@@ -160,7 +184,10 @@ export default class LinkPreview extends Node {
 
   toMarkdown(state, node) {
     state.ensureNewLine();
-    state.write("[{[" + node.attrs.title + "], [" + node.attrs.subtitle + "], [" + node.attrs.image + "]}]("+ node.attrs.href +")");
+    if(node.attrs.event && node.attrs.event.day && node.attrs.event.month){
+      state.write("[{[" + node.attrs.id + "], [" + node.attrs.title + "], [" + node.attrs.subtitle + "], [" + node.attrs.image + "], [" + node.attrs.event.day + "], [" + node.attrs.event.month + "]}]("+ node.attrs.href +")");
+    } else
+      state.write("[{[" + node.attrs.id + "], [" + node.attrs.title + "], [" + node.attrs.subtitle + "], [" + node.attrs.image + "]}]("+ node.attrs.href +")");
     state.write("\n\n");
   }
 
@@ -169,9 +196,11 @@ export default class LinkPreview extends Node {
       node: "link_with_preview",
       getAttrs: tok => ({
         href: tok.attrGet("href"),
+        id: tok.attrGet("id") || null,
         title: tok.attrGet("title") || null,
         subtitle: tok.attrGet("subtitle") || null,
         image: tok.attrGet("image") || null,
+        event: tok.attrGet("event") || null,
       }),
     };
   }

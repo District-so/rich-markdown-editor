@@ -14,42 +14,53 @@ const defaultValue = savedText || exampleText;
 
 const docSearchResults = [
   {
+    id: "a",
     title: "Hiring",
     subtitle: "Created by Jane",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0Mjg0NX0",
     url: "/doc/hiring",
   },
   {
+    id: "b",
     title: "Product Roadmap",
     subtitle: "Created by Tom",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0Mjg0NX0",
     url: "/doc/product-roadmap",
   },
   {
+    id: "c",
     title: "Finances",
     subtitle: "Created by Coley",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0Mjg0NX0",
     url: "/doc/finances",
   },
   {
+    id: "d",
     title: "Security",
     subtitle: "Created by Coley",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0Mjg0NX0",
     url: "/doc/security",
   },
   {
+    id: "e",
     title: "Super secret stuff",
     subtitle: "Created by Coley",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0Mjg0NX0",
     url: "/doc/secret-stuff",
+    event: {
+      day: 28,
+      month: "Aug"
+    }
   },
   {
+    id: "f",
     title: "Supero notes",
     subtitle: "Created by Vanessa",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0Mjg0NX0",
     url: "/doc/supero-notes",
   },
   {
+    id: "g",
     title: "Meeting notes",
     subtitle: "Created by Rob",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0Mjg0NX0",

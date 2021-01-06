@@ -19,10 +19,12 @@ import LinkSearchResult from "./LinkSearchResult";
 import baseDictionary from "../dictionary";
 
 export type SearchResult = {
+  id?: string;
   title: string;
   subtitle?: string;
   image?: string;
   url: string;
+  event?: any;
 };
 
 type Props = {
@@ -37,9 +39,11 @@ type Props = {
   onSearchLink?: (term: string) => Promise<SearchResult[]>;
   onSelectLink: (options: {
     href: string;
+    id?: string;
     title?: string;
     subtitle?: string;
     image?: string;
+    event?: any;
   }) => void;
   onClickLink: (href: string, event: MouseEvent) => void;
   onShowToast?: (message: string, code: string) => void;
@@ -105,7 +109,7 @@ class LinkEditor extends React.Component<Props, State> {
     this.save(href, href);
   };
 
-  save = (href: string, title?: string, subtitle?: string, image?: string): void => {
+  save = (href: string, id?: string, title?: string, subtitle?: string, image?: string, event?: any): void => {
     href = href.trim();
 
     if (href.length === 0) return;
@@ -119,7 +123,7 @@ class LinkEditor extends React.Component<Props, State> {
       href = `https://${href}`;
     }
 
-    this.props.onSelectLink({ href, title, subtitle, image });
+    this.props.onSelectLink({ href, id, title, subtitle, image, event });
   };
 
   handleKeyDown = (event: React.KeyboardEvent): void => {
@@ -133,7 +137,7 @@ class LinkEditor extends React.Component<Props, State> {
         if (selectedIndex >= 0) {
           const result = results[selectedIndex];
           if (result) {
-            this.save(result.url, result.title, result.subtitle, result.image);
+            this.save(result.url, result.id, result.title, result.subtitle, result.image, result.event);
           } else if (onCreateLink && selectedIndex === results.length) {
             this.handleCreateLink(this.suggestedLinkTitle);
           }
@@ -252,9 +256,9 @@ class LinkEditor extends React.Component<Props, State> {
     view.focus();
   };
 
-  handleSelectLink = (url: string, title: string, subtitle?: string, image?: string) => event => {
+  handleSelectLink = (url: string, id?: string, title: string, subtitle?: string, image?: string, event?: any) => event => {
     event.preventDefault();
-    this.save(url, title, subtitle, image);
+    this.save(url, id, title, subtitle, image, event);
 
     if (this.initialSelectionLength) {
       this.moveSelectionToEnd();
@@ -330,7 +334,7 @@ class LinkEditor extends React.Component<Props, State> {
                 subtitle={result.subtitle}
                 icon={<DocumentIcon color={theme.toolbarItem} />}
                 onMouseOver={() => this.handleFocusLink(index)}
-                onClick={this.handleSelectLink(result.url, result.title, result.subtitle, result.image)}
+                onClick={this.handleSelectLink(result.url, result.id, result.title, result.subtitle, result.image, result.event)}
                 selected={index === selectedIndex}
               />
             ))}

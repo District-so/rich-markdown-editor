@@ -4,10 +4,12 @@ import { Mark, Node } from "prosemirror-model";
 import theme from "../theme";
 import baseDictionary from "../dictionary";
 export declare type SearchResult = {
+    id?: string;
     title: string;
     subtitle?: string;
     image?: string;
     url: string;
+    event?: any;
 };
 declare type Props = {
     mark?: Mark;
@@ -20,10 +22,12 @@ declare type Props = {
     onCreateLink?: (title: string) => Promise<void>;
     onSearchLink?: (term: string) => Promise<SearchResult[]>;
     onSelectLink: (options: {
+        id?: string;
         href: string;
         title?: string;
         subtitle?: string;
         image?: string;
+        event?: any;
     }) => void;
     onClickLink: (href: string, event: MouseEvent) => void;
     onShowToast?: (message: string, code: string) => void;
@@ -46,14 +50,14 @@ declare class LinkEditor extends React.Component<Props, State> {
     get href(): string;
     get suggestedLinkTitle(): string;
     componentWillUnmount: () => void;
-    save: (href: string, title?: string | undefined, subtitle?: string | undefined, image?: string | undefined) => void;
+    save: (href: string, id?: string | undefined, title?: string | undefined, subtitle?: string | undefined, image?: string | undefined, event?: any) => void;
     handleKeyDown: (event: React.KeyboardEvent<Element>) => void;
     handleFocusLink: (selectedIndex: number) => void;
     handleChange: (event: any) => Promise<void>;
     handleOpenLink: (event: any) => void;
     handleCreateLink: (value: string) => Promise<void> | undefined;
     handleRemoveLink: () => void;
-    handleSelectLink: (url: string, title: string, subtitle?: string | undefined, image?: string | undefined) => (event: any) => void;
+    handleSelectLink: (url: string, id?: string | undefined, title: string, subtitle?: string | undefined, image?: string | undefined, event?: any) => (event: any) => void;
     moveSelectionToEnd: () => void;
     render(): JSX.Element;
 }

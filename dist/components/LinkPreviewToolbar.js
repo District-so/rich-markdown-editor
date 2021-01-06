@@ -68,7 +68,7 @@ class LinkToolbar extends React.Component {
                 dictionary,
             });
         };
-        this.handleOnSelectLink = ({ href, title, subtitle, image, }) => {
+        this.handleOnSelectLink = ({ href, id, title, subtitle, image, event }) => {
             const { view, onClose } = this.props;
             onClose();
             this.props.view.focus();
@@ -76,7 +76,7 @@ class LinkToolbar extends React.Component {
             const { from, to } = state.selection;
             assert_1.default(from === to);
             dispatch(view.state.tr
-                .insert(from, state.schema.nodes.link_with_preview.create({ href, title, subtitle, image })));
+                .insert(from, state.schema.nodes.link_with_preview.create({ href, id, title, subtitle, image, event })));
         };
     }
     componentDidMount() {

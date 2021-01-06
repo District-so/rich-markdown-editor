@@ -8,6 +8,9 @@ export default class LinkPreview extends Node {
             href: {
                 default: string;
             };
+            id: {
+                default: string;
+            };
             title: {
                 default: string;
             };
@@ -16,6 +19,9 @@ export default class LinkPreview extends Node {
             };
             image: {
                 default: string;
+            };
+            event: {
+                default: null;
             };
         };
         content: string;
@@ -26,18 +32,14 @@ export default class LinkPreview extends Node {
             tag: string;
             getAttrs: (dom: HTMLElement) => {
                 href: string | null;
+                id: string | null;
                 title: string | null;
                 subtitle: string | null;
                 image: string | null;
+                event: string | null;
             };
         }[];
-        toDOM: (node: any) => (string | HTMLImageElement | {
-            href: any;
-            rel: string;
-            class: string;
-        } | (string | HTMLDivElement | {
-            class: string;
-        })[])[] | (string | HTMLDivElement | {
+        toDOM: (node: any) => (string | {
             href: any;
             rel: string;
             class: string;
@@ -57,9 +59,11 @@ export default class LinkPreview extends Node {
         node: string;
         getAttrs: (tok: any) => {
             href: any;
+            id: any;
             title: any;
             subtitle: any;
             image: any;
+            event: any;
         };
     };
 }

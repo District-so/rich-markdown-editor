@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const token_1 = __importDefault(require("markdown-it/lib/token"));
-const LINK_PREVIEW_REGEX = /\{((?:\[(?<title>.*?)\]),\s?(?:\[(?<subtitle>.*?)\]),\s?(?:\[(?<image>.*?)\])\s?.*)\}/i;
+const LINK_PREVIEW_REGEX = /\{((?:\[(?<id>.*?)\]),\s?(?:\[(?<title>.*?)\]),\s?(?:\[(?<subtitle>.*?)\]),\s?(?:\[(?<image>.*?)\])(,\s?(?:\[(?<event_day>.*?)\]),\s?(?:\[(?<event_month>.*?)\]))?\s?.*)\}/i;
 function isLinkPreview(token) {
     return LINK_PREVIEW_REGEX.exec(token.content);
 }
@@ -44,9 +44,16 @@ function markdownItLinkPreview(md) {
                         const href = insideLink.attrs ? insideLink.attrs[0][1] : "";
                         const token = new token_1.default("link_with_preview", "a", 0);
                         token.attrSet("href", href);
+                        token.attrSet("id", result.groups.id);
                         token.attrSet("title", result.groups.title);
                         token.attrSet("subtitle", result.groups.subtitle);
                         token.attrSet("image", result.groups.image);
+                        if (result.groups.event_day && result.groups.event_month) {
+                            token.attrSet("event", {
+                                day: result.groups.event_day,
+                                month: result.groups.event_month
+                            });
+                        }
                         tokens.splice(i - 1, 3, token);
                         break;
                     }
