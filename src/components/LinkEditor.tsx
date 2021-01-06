@@ -256,7 +256,7 @@ class LinkEditor extends React.Component<Props, State> {
     view.focus();
   };
 
-  handleSelectLink = (url: string, id?: string, title: string, subtitle?: string, image?: string, event?: any) => event => {
+  handleSelectLink = (url: string, id?: string, title?: string, subtitle?: string, image?: string, event?: any) => event => {
     event.preventDefault();
     this.save(url, id, title, subtitle, image, event);
 
