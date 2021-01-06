@@ -946,11 +946,11 @@ const StyledEditor = styled("div")<{
     margin: 0;
   }
 
-  a:not(.btn) {
+  a:not(.btn):not(.post-card) {
     color: ${props => props.theme.link};
   }
 
-  a:hover:not(.btn) {
+  a:hover:not(.btn):not(.post-card) {
     text-decoration: ${props => (props.readOnly ? "underline" : "none")};
   }
 

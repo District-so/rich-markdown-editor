@@ -49,7 +49,7 @@ class LinkPreview extends Node_1.default {
                 title.className = "title";
                 const subtitle = document.createElement("p");
                 subtitle.innerHTML = node.attrs.subtitle;
-                subtitle.className = 'post-excerpt';
+                subtitle.className = 'subtitle';
                 if (node.attrs.image) {
                     const image = document.createElement("img");
                     image.src = node.attrs.image;
