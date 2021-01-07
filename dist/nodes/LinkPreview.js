@@ -166,10 +166,10 @@ class LinkPreview extends Node_1.default {
     toMarkdown(state, node) {
         state.ensureNewLine();
         if (node.attrs.event && node.attrs.event.day && node.attrs.event.month) {
-            state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=" + node.attrs.image + " event_day=" + node.attrs.event.day + " event_month=" + node.attrs.event.month + "}");
+            state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=\"" + node.attrs.image + "\" event_day=" + node.attrs.event.day + " event_month=" + node.attrs.event.month + "}");
         }
         else
-            state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=" + node.attrs.image + "}");
+            state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=\"" + node.attrs.image + "\"}");
         state.write("\n\n");
     }
     parseMarkdown() {
