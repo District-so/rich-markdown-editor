@@ -264,9 +264,9 @@ export default class Image extends Node {
           onClick={isEditable ? this.handleSelect(props) : undefined}
         >
           <div contentEditable={false}>
-            <select onChange={this.handleAlignmentChange(props)}>
+            <select value={alignment} onChange={this.handleAlignmentChange(props)}>
               {this.alignmentOptions.map(([key, label], index) => (
-                <option key={key} value={key} selected={(key == alignment)}>{label}</option>
+                <option key={key} value={key}>{label}</option>
               ))}
             </select>
           </div>

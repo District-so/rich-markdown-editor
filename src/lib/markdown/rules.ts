@@ -11,7 +11,7 @@ import buttonsPlugin from "./buttons";
 import underlinesPlugin from "./underlines";
 
 export default function rules({ embeds }) {
-  return markdownit("default", {
+  var md = markdownit("default", {
     breaks: false,
     html: false,
   })
@@ -30,4 +30,6 @@ export default function rules({ embeds }) {
     .use(underlinesPlugin)
     .use(tablesPlugin)
     .use(noticesPlugin);
+
+  return md;
 }

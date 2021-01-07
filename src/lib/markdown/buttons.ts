@@ -1,12 +1,6 @@
 import MarkdownIt from "markdown-it";
 import Token from "markdown-it/lib/token";
 
-const BUTTON_REGEX = /\{(?<title>.*?)\}{(?<style>.*?)\}/i;
-
-function isButton(token: Token) {
-  return BUTTON_REGEX.exec(token.content);
-}
-
 function isInline(token: Token): boolean {
   return token.type === "inline";
 }
@@ -25,7 +19,7 @@ function isLinkClose(token: Token) {
 
 export default function markdownItButton(md: MarkdownIt): void {
   // insert a new rule after the "inline" rules are parsed
-  md.core.ruler.after("inline", "button", state => {
+  md.core.ruler.push("button", state => {
     const tokens = state.tokens;
     let insideLink;
     // work backwards through the tokens and find text that looks like a checkbox
@@ -47,20 +41,16 @@ export default function markdownItButton(md: MarkdownIt): void {
             continue;
           }
 
-          const result = isButton(current);
-	        if(result){
+	        if(current.content && insideLink && insideLink.attrs && insideLink.attrs.length > 1 && insideLink.attrs[1][0] == 'style'){
             const href = insideLink.attrs ? insideLink.attrs[0][1] : "";
+            const style = insideLink.attrs[1][1] : "primary";
 	        	const token = new Token("button", "a", 0);
-            // @ts-ignore
-            token.content = result.groups.title;
-            // @ts-ignore
-            token.attrSet("title", result.groups.title);
+            token.content = current.content;
+            token.attrSet("title", current.content);
             token.attrSet("href", href);
-            // @ts-ignore
-            token.attrSet("style", result.groups.style);
+            token.attrSet("style", style);
             const tokenChildren = new Token("text", "", 0);
-            // @ts-ignore
-            tokenChildren.content = result.groups.title;
+            tokenChildren.content = current.content;
             token.children = [tokenChildren];
             tokens.splice(i - 1, 3, token);
             break;

@@ -146,7 +146,7 @@ class Image extends Node_1.default {
             return (React.createElement("div", { contentEditable: false, className: "image" },
                 React.createElement(ImageWrapper, { className: alignment + " image-block " + (isSelected ? "ProseMirror-selectednode" : ""), onClick: isEditable ? this.handleSelect(props) : undefined },
                     React.createElement("div", { contentEditable: false },
-                        React.createElement("select", { onChange: this.handleAlignmentChange(props) }, this.alignmentOptions.map(([key, label], index) => (React.createElement("option", { key: key, value: key, selected: (key == alignment) }, label))))),
+                        React.createElement("select", { value: alignment, onChange: this.handleAlignmentChange(props) }, this.alignmentOptions.map(([key, label], index) => (React.createElement("option", { key: key, value: key }, label))))),
                     React.createElement(react_medium_image_zoom_1.default, { image: {
                             src,
                             alt,

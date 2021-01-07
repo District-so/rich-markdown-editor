@@ -83,7 +83,7 @@ class Button extends Node_1.default {
             const { href, title, style } = props.node.attrs;
             return (React.createElement(ButtonWrapper, { contentEditable: false, className: "btn-block", onClick: isEditable ? this.handleSelect(props) : undefined },
                 React.createElement("div", { contentEditable: false },
-                    React.createElement("select", { onChange: this.handleStyleChange(props) }, this.styleOptions.map(([key, label], index) => (React.createElement("option", { key: key, value: key, selected: (key == style) }, label))))),
+                    React.createElement("select", { value: style, onChange: this.handleStyleChange(props) }, this.styleOptions.map(([key, label], index) => (React.createElement("option", { key: key, value: key }, label))))),
                 React.createElement(ButtonTitle, { onKeyDown: this.handleKeyDown(props), onBlur: this.handleBlur(props), href: href, rel: "noreferrer nofollow", contentEditable: isEditable, suppressContentEditableWarning: true, className: "btn btn-" + style }, title)));
         };
     }
@@ -221,7 +221,7 @@ class Button extends Node_1.default {
     }
     toMarkdown(state, node) {
         state.ensureNewLine();
-        state.write("[{" + node.attrs.title + "}{" + node.attrs.style + "}](" + node.attrs.href + ")");
+        state.write("[" + node.attrs.title + "](" + node.attrs.href + "){style=" + node.attrs.style + "}");
         state.write("\n\n");
     }
     parseMarkdown() {

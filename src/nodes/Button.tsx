@@ -171,9 +171,9 @@ export default class Button extends Node {
         onClick={isEditable ? this.handleSelect(props) : undefined}
       >
         <div contentEditable={false}>
-          <select onChange={this.handleStyleChange(props)}>
+          <select value={style} onChange={this.handleStyleChange(props)}>
             {this.styleOptions.map(([key, label], index) => (
-              <option key={key} value={key} selected={(key == style)}>{label}</option>
+              <option key={key} value={key}>{label}</option>
             ))}
           </select>
         </div>
@@ -275,7 +275,7 @@ export default class Button extends Node {
 
   toMarkdown(state, node) {
     state.ensureNewLine();
-    state.write("[{" + node.attrs.title + "}{"+ node.attrs.style +"}]("+ node.attrs.href +")");
+    state.write("[" + node.attrs.title + "]("+ node.attrs.href +"){style="+ node.attrs.style +"}");
     state.write("\n\n");
   }
 

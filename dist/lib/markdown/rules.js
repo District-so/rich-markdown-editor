@@ -15,7 +15,7 @@ const link_previews_1 = __importDefault(require("./link_previews"));
 const buttons_1 = __importDefault(require("./buttons"));
 const underlines_1 = __importDefault(require("./underlines"));
 function rules({ embeds }) {
-    return markdown_it_1.default("default", {
+    var md = markdown_it_1.default("default", {
         breaks: false,
         html: false,
     })
@@ -34,6 +34,7 @@ function rules({ embeds }) {
         .use(underlines_1.default)
         .use(tables_1.default)
         .use(notices_1.default);
+    return md;
 }
 exports.default = rules;
 //# sourceMappingURL=rules.js.map
