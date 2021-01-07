@@ -74,7 +74,7 @@ class LinkPreview extends Node_1.default {
                 }
                 if (node.attrs.event && node.attrs.event.day && node.attrs.event.month) {
                     const day = document.createElement("label");
-                    day.innerHTML = node.attrs.event.day.toString();
+                    day.innerHTML = node.attrs.event.day;
                     day.className = "event-day text-uppercase mb-1 text-sm";
                     const month = document.createElement("label");
                     month.innerHTML = node.attrs.event.month;
@@ -87,8 +87,8 @@ class LinkPreview extends Node_1.default {
                             [
                                 "div",
                                 { class: "event-block alert bg-light text-center px-2 pt-1 pb-0 mr-3 mb-0" },
+                                month,
                                 day,
-                                month
                             ],
                             title,
                         ],
