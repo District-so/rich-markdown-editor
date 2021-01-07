@@ -84,15 +84,15 @@ export default class SelectionToolbar extends React.Component<Props> {
 
   handleOnSelectLink = ({
     href,
-    id,
     title,
+    id,
     subtitle,
     image,
     event,
   }: {
     href: string;
-    id?: string;
     title?: string;
+    id?: string;
     subtitle?: string;
     image?: string;
     event?: any;

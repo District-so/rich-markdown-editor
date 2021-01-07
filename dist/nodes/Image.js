@@ -21,10 +21,20 @@ const uploadPlaceholder_1 = __importDefault(require("../lib/uploadPlaceholder"))
 const insertFiles_1 = __importDefault(require("../commands/insertFiles"));
 const Node_1 = __importDefault(require("./Node"));
 const IMAGE_INPUT_REGEX = /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
-const STYLE = {
+const CENTER_STYLE = {
     display: "inline-block",
     maxWidth: "100%",
     maxHeight: "75vh",
+};
+const FULL_WIDTH_STYLE = {
+    display: "block",
+    width: "100%",
+    maxHeight: "100%",
+};
+const THUMBNAIL_STYLE = {
+    display: "inline-block",
+    maxWidth: "100%",
+    maxHeight: "250px",
 };
 const uploadPlugin = options => new prosemirror_state_1.Plugin({
     props: {
@@ -75,6 +85,22 @@ const uploadPlugin = options => new prosemirror_state_1.Plugin({
 class Image extends Node_1.default {
     constructor() {
         super(...arguments);
+        this.handleAlignmentChange = ({ node, getPos }) => event => {
+            const src = node.attrs.src;
+            const alt = node.attrs.alt;
+            const alignment = event.target.value;
+            if (alignment === node.attrs.alignment)
+                return;
+            const { view } = this.editor;
+            const { tr } = view.state;
+            const pos = getPos();
+            const transaction = tr.setNodeMarkup(pos, undefined, {
+                src,
+                alignment,
+                alt,
+            });
+            view.dispatch(transaction);
+        };
         this.handleKeyDown = ({ node, getPos }) => event => {
             if (event.key === "Enter") {
                 event.preventDefault();
@@ -116,19 +142,35 @@ class Image extends Node_1.default {
         };
         this.component = props => {
             const { theme, isEditable, isSelected } = props;
-            const { alt, src } = props.node.attrs;
+            const { alt, alignment, src } = props.node.attrs;
             return (React.createElement("div", { contentEditable: false, className: "image" },
-                React.createElement(ImageWrapper, { className: isSelected ? "ProseMirror-selectednode" : "", onClick: isEditable ? this.handleSelect(props) : undefined },
+                React.createElement(ImageWrapper, { className: alignment + " image-block " + (isSelected ? "ProseMirror-selectednode" : ""), onClick: isEditable ? this.handleSelect(props) : undefined },
+                    React.createElement("div", { contentEditable: false },
+                        React.createElement("select", { onChange: this.handleAlignmentChange(props) }, this.alignmentOptions.map(([key, label], index) => (React.createElement("option", { key: key, value: key, selected: (key == alignment) }, label))))),
                     React.createElement(react_medium_image_zoom_1.default, { image: {
                             src,
                             alt,
-                            style: STYLE,
+                            style: this.alignmentStyles[alignment],
                         }, defaultStyles: {
                             overlay: {
                                 backgroundColor: theme.background,
                             },
                         }, shouldRespectMaxDimension: true })),
                 (isEditable || alt) && (React.createElement(Caption, { onKeyDown: this.handleKeyDown(props), onBlur: this.handleBlur(props), tabIndex: -1, contentEditable: isEditable, suppressContentEditableWarning: true }, alt))));
+        };
+    }
+    get alignmentOptions() {
+        return Object.entries({
+            center: this.options.dictionary.center,
+            full_width: this.options.dictionary.fullWidth,
+            thumbnail: this.options.dictionary.thumbnail,
+        });
+    }
+    get alignmentStyles() {
+        return {
+            center: CENTER_STYLE,
+            full_width: FULL_WIDTH_STYLE,
+            thumbnail: THUMBNAIL_STYLE,
         };
     }
     get name() {
@@ -139,6 +181,9 @@ class Image extends Node_1.default {
             inline: true,
             attrs: {
                 src: {},
+                alignment: {
+                    default: "center"
+                },
                 alt: {
                     default: null,
                 },
@@ -162,12 +207,26 @@ class Image extends Node_1.default {
                 },
             ],
             toDOM: node => {
+                const select = document.createElement("select");
+                select.addEventListener("change", this.handleAlignmentChange);
+                this.alignmentOptions.forEach(([key, label]) => {
+                    const option = document.createElement("option");
+                    option.value = key;
+                    option.innerText = label;
+                    option.selected = node.attrs.alignment === key;
+                    select.appendChild(option);
+                });
                 return [
                     "div",
                     {
                         class: "image",
                     },
-                    ["img", Object.assign(Object.assign({}, node.attrs), { contentEditable: false })],
+                    [
+                        "div",
+                        { class: "image-block " + node.attrs.alignment },
+                        ["div", { contentEditable: false }, select],
+                        ["img", Object.assign(Object.assign({}, node.attrs), { contentEditable: false })],
+                    ],
                     ["p", { class: "caption" }, 0],
                 ];
             },
@@ -178,13 +237,15 @@ class Image extends Node_1.default {
             state.esc((node.attrs.alt || "").replace("\n", "") || "") +
             "](" +
             state.esc(node.attrs.src) +
-            ")");
+            ")" +
+            "{alignment=" + node.attrs.alignment + "}");
     }
     parseMarkdown() {
         return {
             node: "image",
             getAttrs: token => ({
                 src: token.attrGet("src"),
+                alignment: token.attrGet("alignment"),
                 alt: (token.children[0] && token.children[0].content) || null,
             }),
         };
@@ -222,8 +283,7 @@ class Image extends Node_1.default {
 }
 exports.default = Image;
 const ImageWrapper = styled_components_1.default.span `
-  line-height: 0;
-  display: inline-block;
+  
 `;
 const Caption = styled_components_1.default.p `
   border: 0;

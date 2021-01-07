@@ -23,8 +23,8 @@ declare type Props = {
     onSearchLink?: (term: string) => Promise<SearchResult[]>;
     onSelectLink: (options: {
         href: string;
-        id?: string;
         title?: string;
+        id?: string;
         subtitle?: string;
         image?: string;
         event?: any;
@@ -50,14 +50,14 @@ declare class LinkEditor extends React.Component<Props, State> {
     get href(): string;
     get suggestedLinkTitle(): string;
     componentWillUnmount: () => void;
-    save: (href: string, id?: string | undefined, title?: string | undefined, subtitle?: string | undefined, image?: string | undefined, event?: any) => void;
+    save: (href: string, title?: string | undefined, id?: string | undefined, subtitle?: string | undefined, image?: string | undefined, event?: any) => void;
     handleKeyDown: (event: React.KeyboardEvent<Element>) => void;
     handleFocusLink: (selectedIndex: number) => void;
     handleChange: (event: any) => Promise<void>;
     handleOpenLink: (event: any) => void;
     handleCreateLink: (value: string) => Promise<void> | undefined;
     handleRemoveLink: () => void;
-    handleSelectLink: (url: string, id?: string | undefined, title?: string | undefined, subtitle?: string | undefined, image?: string | undefined, event?: any) => (event: any) => void;
+    handleSelectLink: (url: string, title?: string | undefined, id?: string | undefined, subtitle?: string | undefined, image?: string | undefined, event?: any) => (event: any) => void;
     moveSelectionToEnd: () => void;
     render(): JSX.Element;
 }

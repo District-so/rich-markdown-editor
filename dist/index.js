@@ -472,6 +472,25 @@ const StyledEditor = styled_components_1.default("div") `
     max-width: 100%;
   }
 
+  .image-block {
+    line-height: 0;
+    display: inline-block;
+  }
+
+  .image-block.center {
+    line-height: 0;
+    display: inline-block;
+  }
+
+  .image-block.thumbnail {
+    line-height: 0;
+    display: inline-block;
+  }
+
+  .image-block.full_width {
+    display: block;
+  }
+
   .image {
     text-align: center;
 
@@ -808,7 +827,8 @@ const StyledEditor = styled_components_1.default("div") `
 
   .code-block,
   .notice-block,
-  .btn-block {
+  .btn-block,
+  .image-block {
     position: relative;
 
     select,

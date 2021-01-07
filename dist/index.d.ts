@@ -299,6 +299,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         alignRight: string;
         bulletList: string;
         button: string;
+        center: string;
         checkboxList: string;
         codeBlock: string;
         codeCopied: string;
@@ -315,6 +316,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         em: string;
         embedInvalidLink: string;
         findOrCreateDoc: string;
+        fullWidth: string;
         h1: string;
         h2: string;
         h3: string;
@@ -349,6 +351,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         success: string;
         successNotice: string;
         table: string;
+        thumbnail: string;
         tip: string;
         tipNotice: string;
         warning: string;
@@ -364,6 +367,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         alignRight: string;
         bulletList: string;
         button: string;
+        center: string;
         checkboxList: string;
         codeBlock: string;
         codeCopied: string;
@@ -380,6 +384,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         em: string;
         embedInvalidLink: string;
         findOrCreateDoc: string;
+        fullWidth: string;
         h1: string;
         h2: string;
         h3: string;
@@ -414,6 +419,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         success: string;
         successNotice: string;
         table: string;
+        thumbnail: string;
         tip: string;
         tipNotice: string;
         warning: string;
@@ -429,6 +435,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         alignRight: string;
         bulletList: string;
         button: string;
+        center: string;
         checkboxList: string;
         codeBlock: string;
         codeCopied: string;
@@ -445,6 +452,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         em: string;
         embedInvalidLink: string;
         findOrCreateDoc: string;
+        fullWidth: string;
         h1: string;
         h2: string;
         h3: string;
@@ -479,6 +487,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         success: string;
         successNotice: string;
         table: string;
+        thumbnail: string;
         tip: string;
         tipNotice: string;
         warning: string;

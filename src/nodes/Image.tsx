@@ -19,10 +19,22 @@ import Node from "./Node";
  */
 const IMAGE_INPUT_REGEX = /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
 
-const STYLE = {
+const CENTER_STYLE = {
   display: "inline-block",
   maxWidth: "100%",
   maxHeight: "75vh",
+};
+
+const FULL_WIDTH_STYLE = {
+  display: "block",
+  width: "100%",
+  maxHeight: "100%",
+};
+
+const THUMBNAIL_STYLE = {
+  display: "inline-block",
+  maxWidth: "100%",
+  maxHeight: "250px",
 };
 
 const uploadPlugin = options =>
@@ -90,6 +102,22 @@ const uploadPlugin = options =>
   });
 
 export default class Image extends Node {
+  get alignmentOptions() {
+    return Object.entries({
+      center: this.options.dictionary.center,
+      full_width: this.options.dictionary.fullWidth,
+      thumbnail: this.options.dictionary.thumbnail,
+    });
+  }
+
+  get alignmentStyles() {
+    return {
+      center: CENTER_STYLE,
+      full_width: FULL_WIDTH_STYLE,
+      thumbnail: THUMBNAIL_STYLE,
+    };
+  }
+
   get name() {
     return "image";
   }
@@ -99,6 +127,9 @@ export default class Image extends Node {
       inline: true,
       attrs: {
         src: {},
+        alignment: {
+          default: "center"
+        },
         alt: {
           default: null,
         },
@@ -123,17 +154,53 @@ export default class Image extends Node {
         },
       ],
       toDOM: node => {
+        const select = document.createElement("select");
+        // @ts-ignore
+        select.addEventListener("change", this.handleAlignmentChange);
+
+        this.alignmentOptions.forEach(([key, label]) => {
+          const option = document.createElement("option");
+          option.value = key;
+          option.innerText = label;
+          option.selected = node.attrs.alignment === key;
+          select.appendChild(option);
+        });
+
         return [
           "div",
           {
             class: "image",
           },
-          ["img", { ...node.attrs, contentEditable: false }],
+          [
+            "div", 
+            { class: "image-block " + node.attrs.alignment }, 
+            ["div", { contentEditable: false }, select],
+            ["img", { ...node.attrs, contentEditable: false }],
+          ],
           ["p", { class: "caption" }, 0],
         ];
       },
     };
   }
+
+  handleAlignmentChange = ({ node, getPos }) => event => {
+    const src = node.attrs.src;
+    const alt = node.attrs.alt;
+    const alignment = event.target.value;
+    if (alignment === node.attrs.alignment) return;
+
+    const { view } = this.editor;
+    const { tr } = view.state;
+
+    // update meta on object
+    const pos = getPos();
+    const transaction = tr.setNodeMarkup(pos, undefined, {
+      src,
+      alignment,
+      alt,
+    });
+    view.dispatch(transaction);
+  };
 
   handleKeyDown = ({ node, getPos }) => event => {
     // Pressing Enter in the caption field should move the cursor/selection
@@ -188,19 +255,26 @@ export default class Image extends Node {
 
   component = props => {
     const { theme, isEditable, isSelected } = props;
-    const { alt, src } = props.node.attrs;
+    const { alt, alignment, src } = props.node.attrs;
 
     return (
       <div contentEditable={false} className="image">
         <ImageWrapper
-          className={isSelected ? "ProseMirror-selectednode" : ""}
+          className={alignment + " image-block " + (isSelected ? "ProseMirror-selectednode" : "")}
           onClick={isEditable ? this.handleSelect(props) : undefined}
         >
+          <div contentEditable={false}>
+            <select onChange={this.handleAlignmentChange(props)}>
+              {this.alignmentOptions.map(([key, label], index) => (
+                <option key={key} value={key} selected={(key == alignment)}>{label}</option>
+              ))}
+            </select>
+          </div>
           <ImageZoom
             image={{
               src,
               alt,
-              style: STYLE,
+              style: this.alignmentStyles[alignment],
             }}
             defaultStyles={{
               overlay: {
@@ -232,7 +306,8 @@ export default class Image extends Node {
         state.esc((node.attrs.alt || "").replace("\n", "") || "") +
         "](" +
         state.esc(node.attrs.src) +
-        ")"
+        ")" +
+        "{alignment=" + node.attrs.alignment + "}"
     );
   }
 
@@ -241,6 +316,7 @@ export default class Image extends Node {
       node: "image",
       getAttrs: token => ({
         src: token.attrGet("src"),
+        alignment: token.attrGet("alignment"),
         alt: (token.children[0] && token.children[0].content) || null,
       }),
     };
@@ -287,8 +363,7 @@ export default class Image extends Node {
 }
 
 const ImageWrapper = styled.span`
-  line-height: 0;
-  display: inline-block;
+  
 `;
 
 const Caption = styled.p`

@@ -8,10 +8,10 @@ export default class LinkPreview extends Node {
             href: {
                 default: string;
             };
-            id: {
+            title: {
                 default: string;
             };
-            title: {
+            id: {
                 default: string;
             };
             subtitle: {
@@ -59,8 +59,8 @@ export default class LinkPreview extends Node {
         node: string;
         getAttrs: (tok: any) => {
             href: any;
-            id: any;
             title: any;
+            id: any;
             subtitle: any;
             image: any;
             event: any;

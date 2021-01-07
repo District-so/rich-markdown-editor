@@ -3,11 +3,32 @@ import { Plugin } from "prosemirror-state";
 import { InputRule } from "prosemirror-inputrules";
 import Node from "./Node";
 export default class Image extends Node {
+    get alignmentOptions(): [string, any][];
+    get alignmentStyles(): {
+        center: {
+            display: string;
+            maxWidth: string;
+            maxHeight: string;
+        };
+        full_width: {
+            display: string;
+            width: string;
+            maxHeight: string;
+        };
+        thumbnail: {
+            display: string;
+            maxWidth: string;
+            maxHeight: string;
+        };
+    };
     get name(): string;
     get schema(): {
         inline: boolean;
         attrs: {
             src: {};
+            alignment: {
+                default: string;
+            };
             alt: {
                 default: null;
             };
@@ -24,10 +45,18 @@ export default class Image extends Node {
                 alt: string;
             };
         }[];
-        toDOM: (node: any) => (string | any[] | {
+        toDOM: (node: any) => (string | {
             class: string;
-        })[];
+        } | (string | any[] | {
+            class: string;
+        })[] | (string | number | {
+            class: string;
+        })[])[];
     };
+    handleAlignmentChange: ({ node, getPos }: {
+        node: any;
+        getPos: any;
+    }) => (event: any) => void;
     handleKeyDown: ({ node, getPos }: {
         node: any;
         getPos: any;
@@ -45,6 +74,7 @@ export default class Image extends Node {
         node: string;
         getAttrs: (token: any) => {
             src: any;
+            alignment: any;
             alt: any;
         };
     };

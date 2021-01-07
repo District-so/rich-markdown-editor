@@ -173,7 +173,7 @@ export default class Button extends Node {
         <div contentEditable={false}>
           <select onChange={this.handleStyleChange(props)}>
             {this.styleOptions.map(([key, label], index) => (
-              <option key={key} value={key}>{label}</option>
+              <option key={key} value={key} selected={(key == style)}>{label}</option>
             ))}
           </select>
         </div>

@@ -18,10 +18,10 @@ class LinkPreview extends Node_1.default {
                 href: {
                     default: "",
                 },
-                id: {
+                title: {
                     default: "",
                 },
-                title: {
+                id: {
                     default: "",
                 },
                 subtitle: {
@@ -177,8 +177,8 @@ class LinkPreview extends Node_1.default {
             node: "link_with_preview",
             getAttrs: tok => ({
                 href: tok.attrGet("href"),
-                id: tok.attrGet("id") || null,
                 title: tok.attrGet("title") || null,
+                id: tok.attrGet("id") || null,
                 subtitle: tok.attrGet("subtitle") || null,
                 image: tok.attrGet("image") || null,
                 event: tok.attrGet("event") || null,

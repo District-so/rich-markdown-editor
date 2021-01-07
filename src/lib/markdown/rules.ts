@@ -1,4 +1,5 @@
 import markdownit from "markdown-it";
+import markdownItAttrs from "markdown-it-attrs";
 import markPlugin from "./mark";
 import checkboxPlugin from "./checkboxes";
 import embedsPlugin from "./embeds";
@@ -14,6 +15,11 @@ export default function rules({ embeds }) {
     breaks: false,
     html: false,
   })
+    .use(markdownItAttrs, {
+        leftDelimiter: '{',
+        rightDelimiter: '}',
+        allowedAttributes: [] // empty array = all attributes are allowed
+    })
     .use(embedsPlugin(embeds))
     .use(linkPreviewPlugin)
     .use(buttonsPlugin)

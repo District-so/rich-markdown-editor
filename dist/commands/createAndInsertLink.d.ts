@@ -10,6 +10,7 @@ declare const createAndInsertLink: (view: EditorView<any>, title: string, href: 
         alignRight: string;
         bulletList: string;
         button: string;
+        center: string;
         checkboxList: string;
         codeBlock: string;
         codeCopied: string;
@@ -26,6 +27,7 @@ declare const createAndInsertLink: (view: EditorView<any>, title: string, href: 
         em: string;
         embedInvalidLink: string;
         findOrCreateDoc: string;
+        fullWidth: string;
         h1: string;
         h2: string;
         h3: string;
@@ -60,6 +62,7 @@ declare const createAndInsertLink: (view: EditorView<any>, title: string, href: 
         success: string;
         successNotice: string;
         table: string;
+        thumbnail: string;
         tip: string;
         tipNotice: string;
         warning: string;
