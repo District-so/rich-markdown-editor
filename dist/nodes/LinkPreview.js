@@ -75,10 +75,10 @@ class LinkPreview extends Node_1.default {
                 if (node.attrs.event && node.attrs.event.day && node.attrs.event.month) {
                     const day = document.createElement("label");
                     day.innerHTML = node.attrs.event.day;
-                    day.className = "event-day text-uppercase mb-1 text-sm";
+                    day.className = "event-day text-primary";
                     const month = document.createElement("label");
                     month.innerHTML = node.attrs.event.month;
-                    month.className = "event-month text-primary";
+                    month.className = "event-month text-uppercase mb-1 text-sm";
                     result.push(["div",
                         { class: "post-text-content" },
                         [
