@@ -15,13 +15,13 @@ declare type Props = {
 };
 export default class SelectionToolbar extends React.Component<Props> {
     handleOnCreateLink: (title: string) => Promise<false | undefined>;
-    handleOnSelectLink: ({ href, title, id, subtitle, image, event, }: {
+    handleOnSelectLink: ({ href, title, id, subtitle, image, event_obj, }: {
         href: string;
         title?: string | undefined;
         id?: string | undefined;
         subtitle?: string | undefined;
         image?: string | undefined;
-        event?: any;
+        event_obj?: any;
     }) => void;
     render(): JSX.Element | null;
 }

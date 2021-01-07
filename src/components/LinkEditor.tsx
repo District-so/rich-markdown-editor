@@ -24,7 +24,7 @@ export type SearchResult = {
   subtitle?: string;
   image?: string;
   url: string;
-  event?: any;
+  event_obj?: any;
 };
 
 type Props = {
@@ -43,7 +43,7 @@ type Props = {
     id?: string;
     subtitle?: string;
     image?: string;
-    event?: any;
+    event_obj?: any;
   }) => void;
   onClickLink: (href: string, event: MouseEvent) => void;
   onShowToast?: (message: string, code: string) => void;
@@ -109,7 +109,7 @@ class LinkEditor extends React.Component<Props, State> {
     this.save(href, href);
   };
 
-  save = (href: string, title?: string, id?: string,  subtitle?: string, image?: string, event?: any): void => {
+  save = (href: string, title?: string, id?: string,  subtitle?: string, image?: string, event_obj?: any): void => {
     href = href.trim();
 
     if (href.length === 0) return;
@@ -123,7 +123,7 @@ class LinkEditor extends React.Component<Props, State> {
       href = `https://${href}`;
     }
 
-    this.props.onSelectLink({ href, title, id, subtitle, image, event });
+    this.props.onSelectLink({ href, title, id, subtitle, image, event_obj });
   };
 
   handleKeyDown = (event: React.KeyboardEvent): void => {
@@ -256,9 +256,9 @@ class LinkEditor extends React.Component<Props, State> {
     view.focus();
   };
 
-  handleSelectLink = (url: string, title?: string, id?: string, subtitle?: string, image?: string, event?: any) => event => {
+  handleSelectLink = (url: string, title?: string, id?: string, subtitle?: string, image?: string, event_obj?: any) => event => {
     event.preventDefault();
-    this.save(url, title, id, subtitle, image, event);
+    this.save(url, title, id, subtitle, image, event_obj);
 
     if (this.initialSelectionLength) {
       this.moveSelectionToEnd();
@@ -334,7 +334,7 @@ class LinkEditor extends React.Component<Props, State> {
                 subtitle={result.subtitle}
                 icon={<DocumentIcon color={theme.toolbarItem} />}
                 onMouseOver={() => this.handleFocusLink(index)}
-                onClick={this.handleSelectLink(result.url, result.title, result.id, result.subtitle, result.image, result.event)}
+                onClick={this.handleSelectLink(result.url, result.title, result.id, result.subtitle, result.image, result.event_obj)}
                 selected={index === selectedIndex}
               />
             ))}

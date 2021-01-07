@@ -56,7 +56,7 @@ export default function markdownItLinkPreview(md: MarkdownIt): void {
             token.attrSet("subtitle", subtitle);
             token.attrSet("image", image);
             if(event_day && event_month){
-              token.attrSet("event", {
+              token.attrSet("event_obj", {
                 day: event_day,
                 month: event_month
               });

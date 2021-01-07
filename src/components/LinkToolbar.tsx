@@ -111,14 +111,14 @@ export default class LinkToolbar extends React.Component<Props> {
     id,
     subtitle,
     image,
-    event
+    event_obj
   }: {
     href: string;
     title?: string;
     id?: string;
     subtitle?: string;
     image?: string;
-    event?: any;
+    event_obj?: any;
   }) => {
     const { view, onClose } = this.props;
 
@@ -146,7 +146,7 @@ export default class LinkToolbar extends React.Component<Props> {
         view.state.tr
           .insert(
             from,
-            state.schema.nodes.link_with_preview.create({ href, title, id, subtitle, image, event })
+            state.schema.nodes.link_with_preview.create({ href, title, id, subtitle, image, event_obj })
           )
       );
     } else {

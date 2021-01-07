@@ -38,7 +38,6 @@ function markdownItButton(md) {
                     if (current.content && insideLink && insideLink.attrs && insideLink.attrs.length > 1 && insideLink.attrs[1][0] == 'style') {
                         const href = insideLink.attrs ? insideLink.attrs[0][1] : "";
                         const style = insideLink.attrs[1][1];
-                        "primary";
                         const token = new token_1.default("button", "a", 0);
                         token.content = current.content;
                         token.attrSet("title", current.content);

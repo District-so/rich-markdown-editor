@@ -44,7 +44,7 @@ class LinkEditor extends React.Component {
             }
             this.save(href, href);
         };
-        this.save = (href, title, id, subtitle, image, event) => {
+        this.save = (href, title, id, subtitle, image, event_obj) => {
             href = href.trim();
             if (href.length === 0)
                 return;
@@ -53,7 +53,7 @@ class LinkEditor extends React.Component {
             if (!isUrl_1.default(href) && !href.startsWith("/")) {
                 href = `https://${href}`;
             }
-            this.props.onSelectLink({ href, title, id, subtitle, image, event });
+            this.props.onSelectLink({ href, title, id, subtitle, image, event_obj });
         };
         this.handleKeyDown = (event) => {
             switch (event.key) {
@@ -165,9 +165,9 @@ class LinkEditor extends React.Component {
             }
             view.focus();
         };
-        this.handleSelectLink = (url, title, id, subtitle, image, event) => event => {
+        this.handleSelectLink = (url, title, id, subtitle, image, event_obj) => event => {
             event.preventDefault();
-            this.save(url, title, id, subtitle, image, event);
+            this.save(url, title, id, subtitle, image, event_obj);
             if (this.initialSelectionLength) {
                 this.moveSelectionToEnd();
             }
@@ -214,7 +214,7 @@ class LinkEditor extends React.Component {
             React.createElement(ToolbarButton_1.default, { onClick: this.handleRemoveLink },
                 React.createElement(Tooltip, { tooltip: dictionary.removeLink, placement: "top" }, this.initialValue ? (React.createElement(React.Fragment, null, (!this.props.node || this.props.node.type != this.props.view.state.schema.nodes.button) && (React.createElement(outline_icons_1.TrashIcon, { color: theme.toolbarItem })))) : (React.createElement(outline_icons_1.CloseIcon, { color: theme.toolbarItem })))),
             showResults && (React.createElement(SearchResults, { id: "link-search-results" },
-                results.map((result, index) => (React.createElement(LinkSearchResult_1.default, { key: result.url, title: result.title, subtitle: result.subtitle, icon: React.createElement(outline_icons_1.DocumentIcon, { color: theme.toolbarItem }), onMouseOver: () => this.handleFocusLink(index), onClick: this.handleSelectLink(result.url, result.title, result.id, result.subtitle, result.image, result.event), selected: index === selectedIndex }))),
+                results.map((result, index) => (React.createElement(LinkSearchResult_1.default, { key: result.url, title: result.title, subtitle: result.subtitle, icon: React.createElement(outline_icons_1.DocumentIcon, { color: theme.toolbarItem }), onMouseOver: () => this.handleFocusLink(index), onClick: this.handleSelectLink(result.url, result.title, result.id, result.subtitle, result.image, result.event_obj), selected: index === selectedIndex }))),
                 showCreateLink && (React.createElement(LinkSearchResult_1.default, { key: "create", title: suggestedLinkTitle, subtitle: dictionary.createNewDoc, icon: React.createElement(outline_icons_1.PlusIcon, { color: theme.toolbarItem }), onMouseOver: () => this.handleFocusLink(results.length), onClick: () => {
                         this.handleCreateLink(suggestedLinkTitle);
                         if (this.initialSelectionLength) {

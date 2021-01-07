@@ -75,7 +75,7 @@ class SelectionToolbar extends React.Component {
                 dictionary,
             });
         };
-        this.handleOnSelectLink = ({ href, title, id, subtitle, image, event, }) => {
+        this.handleOnSelectLink = ({ href, title, id, subtitle, image, event_obj, }) => {
             const { view } = this.props;
             const { state, dispatch } = view;
             const { from, to } = state.selection;

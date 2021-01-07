@@ -88,14 +88,14 @@ export default class SelectionToolbar extends React.Component<Props> {
     id,
     subtitle,
     image,
-    event,
+    event_obj,
   }: {
     href: string;
     title?: string;
     id?: string;
     subtitle?: string;
     image?: string;
-    event?: any;
+    event_obj?: any;
   }): void => {
     const { view } = this.props;
     const { state, dispatch } = view;
