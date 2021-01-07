@@ -20,7 +20,7 @@ export default class LinkPreview extends Node {
             image: {
                 default: string;
             };
-            event: {
+            event_obj: {
                 default: null;
             };
         };
@@ -36,7 +36,7 @@ export default class LinkPreview extends Node {
                 title: string | null;
                 subtitle: string | null;
                 image: string | null;
-                event: string | null;
+                event_obj: string | null;
             };
         }[];
         toDOM: (node: any) => (string | {
@@ -63,7 +63,7 @@ export default class LinkPreview extends Node {
             id: any;
             subtitle: any;
             image: any;
-            event: any;
+            event_obj: any;
         };
     };
 }

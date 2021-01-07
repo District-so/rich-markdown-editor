@@ -30,7 +30,7 @@ class LinkPreview extends Node_1.default {
                 image: {
                     default: "",
                 },
-                event: {
+                event_obj: {
                     default: null,
                 }
             },
@@ -47,11 +47,12 @@ class LinkPreview extends Node_1.default {
                         title: dom.getAttribute("title"),
                         subtitle: dom.getAttribute("subtitle"),
                         image: dom.getAttribute("image"),
-                        event: dom.getAttribute("event"),
+                        event_obj: dom.getAttribute("event_obj"),
                     }),
                 },
             ],
             toDOM: node => {
+                console.log('node.attrs', node.attrs);
                 const title = document.createElement("div");
                 title.innerHTML = node.attrs.title;
                 title.className = "title";
@@ -72,12 +73,12 @@ class LinkPreview extends Node_1.default {
                     image.className = 'post-image';
                     result.push(image);
                 }
-                if (node.attrs.event && node.attrs.event.day && node.attrs.event.month) {
+                if (node.attrs.event_obj && node.attrs.event_obj.day && node.attrs.event_obj.month) {
                     const day = document.createElement("label");
-                    day.innerHTML = node.attrs.event.day;
+                    day.innerHTML = node.attrs.event_obj.day;
                     day.className = "event-day text-primary";
                     const month = document.createElement("label");
-                    month.innerHTML = node.attrs.event.month;
+                    month.innerHTML = node.attrs.event_obj.month;
                     month.className = "event-month text-uppercase mb-1 text-sm";
                     result.push(["div",
                         { class: "post-text-content" },
@@ -165,8 +166,8 @@ class LinkPreview extends Node_1.default {
     }
     toMarkdown(state, node) {
         state.ensureNewLine();
-        if (node.attrs.event && node.attrs.event.day && node.attrs.event.month) {
-            state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=\"" + node.attrs.image + "\" event_day=" + node.attrs.event.day + " event_month=" + node.attrs.event.month + "}");
+        if (node.attrs.event_obj && node.attrs.event_obj.day && node.attrs.event_obj.month) {
+            state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=\"" + node.attrs.image + "\" event_day=" + node.attrs.event_obj.day + " event_month=" + node.attrs.event_obj.month + "}");
         }
         else
             state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=\"" + node.attrs.image + "\"}");
@@ -181,7 +182,7 @@ class LinkPreview extends Node_1.default {
                 id: tok.attrGet("id") || null,
                 subtitle: tok.attrGet("subtitle") || null,
                 image: tok.attrGet("image") || null,
-                event: tok.attrGet("event") || null,
+                event_obj: tok.attrGet("event_obj") || null,
             }),
         };
     }
