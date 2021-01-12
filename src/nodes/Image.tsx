@@ -247,10 +247,10 @@ export default class Image extends Node {
   handleSelect = ({ getPos }) => event => {
     event.preventDefault();
 
-    const { view } = this.editor;
-    const $pos = view.state.doc.resolve(getPos());
-    const transaction = view.state.tr.setSelection(new NodeSelection($pos));
-    view.dispatch(transaction);
+    // const { view } = this.editor;
+    // const $pos = view.state.doc.resolve(getPos());
+    // const transaction = view.state.tr.setSelection(new NodeSelection($pos));
+    // view.dispatch(transaction);
   };
 
   component = props => {
