@@ -79,7 +79,7 @@ export default class Button extends Node {
             {
               href: node.attrs.href,
               rel: "noopener noreferrer nofollow",
-              class: `btn btn-${node.attrs.style}`
+              class: `btn btn-md btn-${node.attrs.style}`
             },
             0
           ],

@@ -150,7 +150,7 @@ class Button extends Node_1.default {
                         {
                             href: node.attrs.href,
                             rel: "noopener noreferrer nofollow",
-                            class: `btn btn-${node.attrs.style}`
+                            class: `btn btn-md btn-${node.attrs.style}`
                         },
                         0
                     ],
