@@ -149,7 +149,7 @@ export default class Heading extends Node {
                 Decoration.inline(pos, pos + node.nodeSize, {
                   id,
                   class: this.className,
-                  nodeName: "a",
+                  nodeName: "span",
                 })
               );
             });

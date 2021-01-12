@@ -19,7 +19,7 @@ export default class Button extends Node {
         };
         content: string;
         group: string;
-        marks: string;
+        inclusive: boolean;
         selectable: boolean;
         draggable: boolean;
         parseDOM: {

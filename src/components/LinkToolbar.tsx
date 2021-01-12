@@ -153,14 +153,21 @@ export default class LinkToolbar extends React.Component<Props> {
       // button
       dispatch(
         view.state.tr
-          .insertText(title, from, to)
-          .setBlockType(
+          .insert(
             from,
-            to + title.length,
-            state.schema.nodes.button,
-            { href, title }
+            state.schema.nodes.button.create({ href, title })
           )
       );
+      // dispatch(
+      //   view.state.tr
+      //     .insertText(title, from, to)
+      //     .setBlockType(
+      //       from,
+      //       to + title.length,
+      //       state.schema.nodes.button,
+      //       { href, title }
+      //     )
+      // );
     }
   };
 

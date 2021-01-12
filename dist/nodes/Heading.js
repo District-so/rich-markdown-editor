@@ -113,7 +113,7 @@ class Heading extends Node_1.default {
                             decorations.push(prosemirror_view_1.Decoration.inline(pos, pos + node.nodeSize, {
                                 id,
                                 class: this.className,
-                                nodeName: "a",
+                                nodeName: "span",
                             }));
                         });
                         return prosemirror_view_1.DecorationSet.create(doc, decorations);

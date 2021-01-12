@@ -42,9 +42,9 @@ export default class Button extends Node {
           default: "primary",
         },
       },
-      content: "text*",
+      content: "inline*",
       group: "block",
-      marks: "",
+      inclusive: false,
       selectable: true,
       draggable: true,
       parseDOM: [

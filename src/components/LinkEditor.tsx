@@ -137,7 +137,7 @@ class LinkEditor extends React.Component<Props, State> {
         if (selectedIndex >= 0) {
           const result = results[selectedIndex];
           if (result) {
-            this.save(result.url, result.title, result.id, result.subtitle, result.image, result.event);
+            this.save(result.url, result.title, result.id, result.subtitle, result.image, result.event_obj);
           } else if (onCreateLink && selectedIndex === results.length) {
             this.handleCreateLink(this.suggestedLinkTitle);
           }

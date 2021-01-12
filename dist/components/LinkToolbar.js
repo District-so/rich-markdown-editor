@@ -95,8 +95,7 @@ class LinkToolbar extends React.Component {
             }
             else {
                 dispatch(view.state.tr
-                    .insertText(title, from, to)
-                    .setBlockType(from, to + title.length, state.schema.nodes.button, { href, title }));
+                    .insert(from, state.schema.nodes.button.create({ href, title })));
             }
         };
     }

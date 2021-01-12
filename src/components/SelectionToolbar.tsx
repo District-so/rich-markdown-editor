@@ -18,6 +18,7 @@ import getRowIndex from "../queries/getRowIndex";
 import createAndInsertLink from "../commands/createAndInsertLink";
 import { MenuItem } from "../types";
 import baseDictionary from "../dictionary";
+import { findSelectedNodeOfType } from "prosemirror-utils";
 
 type Props = {
   dictionary: typeof baseDictionary;
@@ -35,7 +36,9 @@ function isActive(props) {
   const { view } = props;
   const { selection } = view.state;
 
-  return selection && !selection.empty;
+  const image_node = findSelectedNodeOfType(view.state.schema.nodes.image)(selection);
+
+  return selection && !selection.empty && !image_node;
 }
 
 export default class SelectionToolbar extends React.Component<Props> {

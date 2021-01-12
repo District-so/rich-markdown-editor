@@ -116,9 +116,9 @@ class Button extends Node_1.default {
                     default: "primary",
                 },
             },
-            content: "text*",
+            content: "inline*",
             group: "block",
-            marks: "",
+            inclusive: false,
             selectable: true,
             draggable: true,
             parseDOM: [

@@ -38,10 +38,12 @@ const isNodeActive_1 = __importDefault(require("../queries/isNodeActive"));
 const getColumnIndex_1 = __importDefault(require("../queries/getColumnIndex"));
 const getRowIndex_1 = __importDefault(require("../queries/getRowIndex"));
 const createAndInsertLink_1 = __importDefault(require("../commands/createAndInsertLink"));
+const prosemirror_utils_1 = require("prosemirror-utils");
 function isActive(props) {
     const { view } = props;
     const { selection } = view.state;
-    return selection && !selection.empty;
+    const image_node = prosemirror_utils_1.findSelectedNodeOfType(view.state.schema.nodes.image)(selection);
+    return selection && !selection.empty && !image_node;
 }
 class SelectionToolbar extends React.Component {
     constructor() {

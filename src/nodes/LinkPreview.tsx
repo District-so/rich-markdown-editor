@@ -50,7 +50,6 @@ export default class LinkPreview extends Node {
         },
       ],
       toDOM: node => {
-        console.log('node.attrs', node.attrs);
         const title = document.createElement("div");
         title.innerHTML = node.attrs.title;
         title.className = "title";
