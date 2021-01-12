@@ -184,7 +184,7 @@ export default class Button extends Node {
           rel="noreferrer nofollow"
           contentEditable={isEditable}
           suppressContentEditableWarning
-          className={"btn btn-"+style}
+          className={"btn btn-md btn-"+style}
         >
           {title}
         </ButtonTitle>

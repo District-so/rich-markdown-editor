@@ -84,7 +84,7 @@ class Button extends Node_1.default {
             return (React.createElement(ButtonWrapper, { contentEditable: false, className: "btn-block", onClick: isEditable ? this.handleSelect(props) : undefined },
                 React.createElement("div", { contentEditable: false },
                     React.createElement("select", { value: style, onChange: this.handleStyleChange(props) }, this.styleOptions.map(([key, label], index) => (React.createElement("option", { key: key, value: key }, label))))),
-                React.createElement(ButtonTitle, { onKeyDown: this.handleKeyDown(props), onBlur: this.handleBlur(props), href: href, rel: "noreferrer nofollow", contentEditable: isEditable, suppressContentEditableWarning: true, className: "btn btn-" + style }, title)));
+                React.createElement(ButtonTitle, { onKeyDown: this.handleKeyDown(props), onBlur: this.handleBlur(props), href: href, rel: "noreferrer nofollow", contentEditable: isEditable, suppressContentEditableWarning: true, className: "btn btn-md btn-" + style }, title)));
         };
     }
     get styleOptions() {
