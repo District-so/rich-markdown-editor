@@ -94,7 +94,7 @@ export default class Image extends Node {
       attrs: {
         src: {},
         width: {
-          default: "50%"
+          default: "75%"
         },
         alt: {
           default: null,
@@ -216,23 +216,36 @@ export default class Image extends Node {
       const imgContainerRef = React.useRef(null);
       const imgWrapperRef = React.useRef(null);
 
-      const initialWidth = width;
+      const initialWidth = width ? width : "75%";
       var imageDraggable = false;
       var isLeftDragging = true;
       var initialImageX = null;
       var initialPageX = null;
 
+      const commitWidth = () => {
+        imageDraggable = false;
+        initialImageX = null;
+        initialPageX = null;
+        this.handleWidthChange(props, imgWrapperRef.current.style.width);
+      }
+
       const handleCoverDrag = (e) => {
         e.stopPropagation();
         e.preventDefault();
+        const bounds = imgContainerRef.current.getBoundingClientRect();
+        if(e.pageX <= bounds.x + 10 ||
+          e.pageX >= (bounds.x + bounds.width - 10)
+        ){
+          commitWidth();
+          return;
+        }
         if(!imageDraggable)
           return;
         const effectiveX = isLeftDragging ? (initialImageX + (initialPageX - e.pageX)) : (initialImageX + (e.pageX - initialPageX));
         let effectivePercent = (effectiveX / imgContainerRef.current.clientWidth) * 100;
-        effectivePercent += 10;
         if(effectivePercent < 0)
           effectivePercent = 0;
-        else if(effectivePercent > 100 || effectivePercent > 86)
+        else if(effectivePercent > 100 || effectivePercent > 90)
           effectivePercent = 100;
         imgWrapperRef.current.style.width = effectivePercent + "%";
       }
@@ -250,10 +263,7 @@ export default class Image extends Node {
       }
 
       const handleCoverDragEnd = (e) => {
-        imageDraggable = false;
-        initialImageX = null;
-        initialPageX = null;
-        this.handleWidthChange(props, imgWrapperRef.current.style.width);
+        commitWidth();
         e.stopPropagation();
         e.preventDefault();
       }
