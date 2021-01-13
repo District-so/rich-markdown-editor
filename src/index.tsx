@@ -685,25 +685,6 @@ const StyledEditor = styled("div")<{
     max-width: 100%;
   }
 
-  .image-block {
-    line-height: 0;
-    display: inline-block;
-  }
-
-  .image-block.center {
-    line-height: 0;
-    display: inline-block;
-  }
-
-  .image-block.thumbnail {
-    line-height: 0;
-    display: inline-block;
-  }
-
-  .image-block.full_width {
-    display: block;
-  }
-
   .image {
     text-align: center;
 
@@ -719,6 +700,14 @@ const StyledEditor = styled("div")<{
     img {
       opacity: 0.5;
     }
+  }
+
+  .image .image-bar {
+    display: none;
+  }
+
+  .image:hover .image-bar {
+    display: flex;
   }
 
   .ProseMirror-hideselection *::selection {

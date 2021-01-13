@@ -21,21 +21,6 @@ const uploadPlaceholder_1 = __importDefault(require("../lib/uploadPlaceholder"))
 const insertFiles_1 = __importDefault(require("../commands/insertFiles"));
 const Node_1 = __importDefault(require("./Node"));
 const IMAGE_INPUT_REGEX = /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
-const CENTER_STYLE = {
-    display: "inline-block",
-    maxWidth: "100%",
-    maxHeight: "75vh",
-};
-const FULL_WIDTH_STYLE = {
-    display: "block",
-    width: "100%",
-    maxHeight: "100%",
-};
-const THUMBNAIL_STYLE = {
-    display: "inline-block",
-    maxWidth: "100%",
-    maxHeight: "250px",
-};
 const uploadPlugin = options => new prosemirror_state_1.Plugin({
     props: {
         handleDOMEvents: {
@@ -85,18 +70,17 @@ const uploadPlugin = options => new prosemirror_state_1.Plugin({
 class Image extends Node_1.default {
     constructor() {
         super(...arguments);
-        this.handleAlignmentChange = ({ node, getPos }) => event => {
+        this.handleWidthChange = ({ node, getPos }, width) => {
             const src = node.attrs.src;
             const alt = node.attrs.alt;
-            const alignment = event.target.value;
-            if (alignment === node.attrs.alignment)
+            if (width === node.attrs.width)
                 return;
             const { view } = this.editor;
             const { tr } = view.state;
             const pos = getPos();
             const transaction = tr.setNodeMarkup(pos, undefined, {
                 src,
-                alignment,
+                width,
                 alt,
             });
             view.dispatch(transaction);
@@ -122,6 +106,7 @@ class Image extends Node_1.default {
         this.handleBlur = ({ node, getPos }) => event => {
             const alt = event.target.innerText;
             const src = node.attrs.src;
+            const width = node.attrs.width;
             if (alt === node.attrs.alt)
                 return;
             const { view } = this.editor;
@@ -130,6 +115,7 @@ class Image extends Node_1.default {
             const transaction = tr.setNodeMarkup(pos, undefined, {
                 src,
                 alt,
+                width
             });
             view.dispatch(transaction);
         };
@@ -138,35 +124,72 @@ class Image extends Node_1.default {
         };
         this.component = props => {
             const { theme, isEditable, isSelected } = props;
-            const { alt, alignment, src } = props.node.attrs;
-            return (React.createElement("div", { contentEditable: false, className: "image" },
-                React.createElement(ImageWrapper, { className: alignment + " image-block " + (isSelected ? "ProseMirror-selectednode" : ""), onClick: isEditable ? this.handleSelect(props) : undefined },
-                    React.createElement("div", { contentEditable: false },
-                        React.createElement("select", { value: alignment, onChange: this.handleAlignmentChange(props) }, this.alignmentOptions.map(([key, label], index) => (React.createElement("option", { key: key, value: key }, label))))),
-                    React.createElement(react_medium_image_zoom_1.default, { image: {
-                            src,
-                            alt,
-                            style: this.alignmentStyles[alignment],
-                        }, defaultStyles: {
-                            overlay: {
-                                backgroundColor: theme.background,
-                            },
-                        }, shouldRespectMaxDimension: true })),
-                (isEditable || alt) && (React.createElement(Caption, { onKeyDown: this.handleKeyDown(props), onBlur: this.handleBlur(props), tabIndex: -1, contentEditable: isEditable, suppressContentEditableWarning: true }, alt))));
-        };
-    }
-    get alignmentOptions() {
-        return Object.entries({
-            center: this.options.dictionary.center,
-            full_width: this.options.dictionary.fullWidth,
-            thumbnail: this.options.dictionary.thumbnail,
-        });
-    }
-    get alignmentStyles() {
-        return {
-            center: CENTER_STYLE,
-            full_width: FULL_WIDTH_STYLE,
-            thumbnail: THUMBNAIL_STYLE,
+            const { alt, width, src } = props.node.attrs;
+            const ImageComponent = () => {
+                const [test, setTest] = React.useState(null);
+                const imgContainerRef = React.useRef(null);
+                const imgWrapperRef = React.useRef(null);
+                const initialWidth = width;
+                var imageDraggable = false;
+                var isLeftDragging = true;
+                var initialImageX = null;
+                var initialPageX = null;
+                const handleCoverDrag = (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (!imageDraggable)
+                        return;
+                    const effectiveX = isLeftDragging ? (initialImageX + (initialPageX - e.pageX)) : (initialImageX + (e.pageX - initialPageX));
+                    let effectivePercent = (effectiveX / imgContainerRef.current.clientWidth) * 100;
+                    effectivePercent += 10;
+                    if (effectivePercent < 0)
+                        effectivePercent = 0;
+                    else if (effectivePercent > 100 || effectivePercent > 86)
+                        effectivePercent = 100;
+                    imgWrapperRef.current.style.width = effectivePercent + "%";
+                };
+                const handleCoverDragStart = (e, isLeft) => {
+                    imageDraggable = true;
+                    isLeftDragging = isLeft;
+                    if (!initialImageX) {
+                        const percentPosition = parseInt(initialWidth, 10);
+                        initialImageX = (percentPosition * imgContainerRef.current.clientWidth) / 100;
+                    }
+                    initialPageX = e.pageX;
+                    e.stopPropagation();
+                    e.preventDefault();
+                };
+                const handleCoverDragEnd = (e) => {
+                    imageDraggable = false;
+                    initialImageX = null;
+                    initialPageX = null;
+                    this.handleWidthChange(props, imgWrapperRef.current.style.width);
+                    e.stopPropagation();
+                    e.preventDefault();
+                };
+                return (React.createElement("div", { contentEditable: false, className: "image", ref: imgContainerRef, onMouseMove: handleCoverDrag, onMouseUp: handleCoverDragEnd },
+                    React.createElement(ImageWrapper, { className: "image-block " + (isSelected ? "ProseMirror-selectednode" : ""), onClick: isEditable ? this.handleSelect(props) : undefined, ref: imgWrapperRef, style: { width: initialWidth } },
+                        React.createElement(react_medium_image_zoom_1.default, { image: {
+                                src,
+                                alt,
+                                style: {
+                                    display: "block",
+                                    width: "100%",
+                                    maxHeight: "100%",
+                                },
+                            }, defaultStyles: {
+                                overlay: {
+                                    backgroundColor: theme.background,
+                                },
+                            }, shouldRespectMaxDimension: true }),
+                        isEditable && (React.createElement(React.Fragment, null,
+                            React.createElement(ImageLeftBar, { className: "image-bar", onMouseDown: (e) => { handleCoverDragStart(e, true); } },
+                                React.createElement(ImageLeftHandle, null)),
+                            React.createElement(ImageRightBar, { className: "image-bar", onMouseDown: (e) => { handleCoverDragStart(e, false); } },
+                                React.createElement(ImageRightHandle, null))))),
+                    (isEditable || alt) && (React.createElement(Caption, { onKeyDown: this.handleKeyDown(props), onBlur: this.handleBlur(props), tabIndex: -1, contentEditable: isEditable, suppressContentEditableWarning: true }, alt))));
+            };
+            return (React.createElement(ImageComponent, null));
         };
     }
     get name() {
@@ -177,8 +200,8 @@ class Image extends Node_1.default {
             inline: true,
             attrs: {
                 src: {},
-                alignment: {
-                    default: "center"
+                width: {
+                    default: "50%"
                 },
                 alt: {
                     default: null,
@@ -203,15 +226,6 @@ class Image extends Node_1.default {
                 },
             ],
             toDOM: node => {
-                const select = document.createElement("select");
-                select.addEventListener("change", this.handleAlignmentChange);
-                this.alignmentOptions.forEach(([key, label]) => {
-                    const option = document.createElement("option");
-                    option.value = key;
-                    option.innerText = label;
-                    option.selected = node.attrs.alignment === key;
-                    select.appendChild(option);
-                });
                 return [
                     "div",
                     {
@@ -219,8 +233,7 @@ class Image extends Node_1.default {
                     },
                     [
                         "div",
-                        { class: "image-block " + node.attrs.alignment },
-                        ["div", { contentEditable: false }, select],
+                        { class: "image-block ", style: "width:" + node.attrs.width },
                         ["img", Object.assign(Object.assign({}, node.attrs), { contentEditable: false })],
                     ],
                     ["p", { class: "caption" }, 0],
@@ -234,14 +247,14 @@ class Image extends Node_1.default {
             "](" +
             state.esc(node.attrs.src) +
             ")" +
-            "{alignment=" + node.attrs.alignment + "}");
+            "{width=\"" + node.attrs.width + "\"}");
     }
     parseMarkdown() {
         return {
             node: "image",
             getAttrs: token => ({
                 src: token.attrGet("src"),
-                alignment: token.attrGet("alignment"),
+                width: token.attrGet("width"),
                 alt: (token.children[0] && token.children[0].content) || null,
             }),
         };
@@ -279,7 +292,47 @@ class Image extends Node_1.default {
 }
 exports.default = Image;
 const ImageWrapper = styled_components_1.default.span `
-  
+  position: relative;
+  line-height: 0;
+  display: inline-block;
+`;
+const ImageLeftBar = styled_components_1.default.div `
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 30px;
+  height: 100%;
+  top: 50%;
+  left: 0px;
+  transform: translate(0, -50%);
+  cursor: col-resize;
+`;
+const ImageRightBar = styled_components_1.default.div `
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 30px;
+  height: 100%;
+  top: 50%;
+  right: 0px;
+  transform: translate(0, -50%);
+  cursor: col-resize;
+`;
+const ImageLeftHandle = styled_components_1.default.div `
+  align-self: center;
+  width: 6px;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid #FFF;
+  background: rgba(0,0,0,0.5);
+`;
+const ImageRightHandle = styled_components_1.default.div `
+  align-self: center;
+  width: 6px;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid #FFF;
+  background: rgba(0,0,0,0.5);
 `;
 const Caption = styled_components_1.default.p `
   border: 0;
