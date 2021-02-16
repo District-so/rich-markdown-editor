@@ -40,18 +40,26 @@ class LinkPreview extends Node_1.default {
             draggable: true,
             parseDOM: [
                 {
-                    tag: "a[href]",
-                    getAttrs: (dom) => ({
-                        href: dom.getAttribute("href"),
-                        id: dom.getAttribute("id"),
-                        title: dom.getAttribute("title"),
-                        subtitle: dom.getAttribute("subtitle"),
-                        image: dom.getAttribute("image"),
-                        event_obj: dom.getAttribute("event_obj"),
-                    }),
+                    tag: "a.post-card",
+                    priority: 55,
+                    getAttrs: (dom) => {
+                        console.log('getAttrs', dom);
+                        const img = dom.getElementsByTagName("img")[0];
+                        const title = dom.getElementsByClassName("title")[0];
+                        const subtitle = dom.getElementsByClassName("subtitle")[0];
+                        return {
+                            href: dom.getAttribute("href"),
+                            id: dom.getAttribute("data-id"),
+                            title: title.innerText,
+                            subtitle: subtitle.innerText,
+                            image: img.getAttribute("src"),
+                            event_obj: dom.getAttribute("event_obj"),
+                        };
+                    },
                 },
             ],
             toDOM: node => {
+                console.log('node', node);
                 const title = document.createElement("div");
                 title.innerHTML = node.attrs.title;
                 title.className = "title";
@@ -61,9 +69,10 @@ class LinkPreview extends Node_1.default {
                 var result = [
                     "a",
                     {
+                        'data-id': node.attrs.id,
                         href: node.attrs.href,
                         rel: "noopener noreferrer nofollow",
-                        class: "card post-card"
+                        class: "post-card card"
                     },
                 ];
                 if (node.attrs.image) {

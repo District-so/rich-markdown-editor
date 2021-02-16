@@ -15,6 +15,10 @@ export default class Notice extends Node {
         parseDOM: {
             tag: string;
             preserveWhitespace: string;
+            contentElement: string;
+            getAttrs: (dom: HTMLDivElement) => {
+                style: string | undefined;
+            };
         }[];
         toDOM: (node: any) => (string | (string | number)[] | HTMLDivElement | {
             class: string;

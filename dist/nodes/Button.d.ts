@@ -27,7 +27,7 @@ export default class Button extends Node {
             getAttrs: (dom: HTMLElement) => {
                 href: string | null;
                 title: string | null;
-                style: string | null;
+                style: undefined;
             };
         }[];
         toDOM: (node: any) => (string | {
@@ -38,6 +38,7 @@ export default class Button extends Node {
             href: any;
             rel: string;
             class: string;
+            title: any;
         })[])[];
     };
     handleStyleChange: ({ node, getPos }: {

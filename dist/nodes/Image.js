@@ -222,7 +222,7 @@ class Image extends Node_1.default {
             draggable: true,
             parseDOM: [
                 {
-                    tag: "div[class=image]",
+                    tag: "div.image",
                     getAttrs: (dom) => {
                         const img = dom.getElementsByTagName("img")[0];
                         const caption = dom.getElementsByTagName("p")[0];

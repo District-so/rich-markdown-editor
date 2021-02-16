@@ -49,15 +49,26 @@ export default class Button extends Node {
       draggable: true,
       parseDOM: [
         {
-          tag: "div[d-flex justify-content-center btn-block]",
-          getAttrs: (dom: HTMLElement) => ({
-            href: dom.getAttribute("href"),
-            title: dom.getAttribute("title"),
-            style: dom.getAttribute("subtitle"),
-          }),
+          tag: "div.button-block",
+          getAttrs: (dom: HTMLElement) => {
+            const aElem = dom.getElementsByTagName("a")[0];
+            let style = undefined;
+            this.styleOptions.forEach(([key, label]) => {
+              if(dom.className.includes(key)){
+                style = key;
+                return;
+              }
+            })
+            return {
+              href: aElem.getAttribute("href"),
+              title: aElem.getAttribute("title"),
+              style: style,
+            }
+          },
         },
       ],
       toDOM: node => {
+        // For ReactNode this matters for copy-paste
         const select = document.createElement("select");
         // @ts-ignore
         select.addEventListener("change", this.handleStyleChange);
@@ -72,14 +83,15 @@ export default class Button extends Node {
 
         return [
           "div",
-          { class: "d-flex justify-content-center btn-block" },
+          { class: `button-block ${node.attrs.style}` },
           ["div", { contentEditable: false }, select],
           [
             "a",
             {
               href: node.attrs.href,
               rel: "noopener noreferrer nofollow",
-              class: `btn btn-md btn-${node.attrs.style}`
+              class: `btn btn-md btn-${node.attrs.style}`,
+              title: node.attrs.title
             },
             0
           ],
@@ -167,8 +179,9 @@ export default class Button extends Node {
     return (
       <ButtonWrapper 
         contentEditable={false} 
-        className="btn-block"
+        className="button-block"
         onClick={isEditable ? this.handleSelect(props) : undefined}
+        title={title}
       >
         <div contentEditable={false}>
           <select value={style} onChange={this.handleStyleChange(props)}>

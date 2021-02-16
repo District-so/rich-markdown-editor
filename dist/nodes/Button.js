@@ -81,7 +81,7 @@ class Button extends Node_1.default {
         this.component = props => {
             const { theme, isEditable, isSelected } = props;
             const { href, title, style } = props.node.attrs;
-            return (React.createElement(ButtonWrapper, { contentEditable: false, className: "btn-block", onClick: isEditable ? this.handleSelect(props) : undefined },
+            return (React.createElement(ButtonWrapper, { contentEditable: false, className: "button-block", onClick: isEditable ? this.handleSelect(props) : undefined, title: title },
                 React.createElement("div", { contentEditable: false },
                     React.createElement("select", { value: style, onChange: this.handleStyleChange(props) }, this.styleOptions.map(([key, label], index) => (React.createElement("option", { key: key, value: key }, label))))),
                 React.createElement(ButtonTitle, { onKeyDown: this.handleKeyDown(props), onBlur: this.handleBlur(props), href: href, rel: "noreferrer nofollow", contentEditable: isEditable, suppressContentEditableWarning: true, className: "btn btn-md btn-" + style }, title)));
@@ -123,12 +123,22 @@ class Button extends Node_1.default {
             draggable: true,
             parseDOM: [
                 {
-                    tag: "div[d-flex justify-content-center btn-block]",
-                    getAttrs: (dom) => ({
-                        href: dom.getAttribute("href"),
-                        title: dom.getAttribute("title"),
-                        style: dom.getAttribute("subtitle"),
-                    }),
+                    tag: "div.button-block",
+                    getAttrs: (dom) => {
+                        const aElem = dom.getElementsByTagName("a")[0];
+                        let style = undefined;
+                        this.styleOptions.forEach(([key, label]) => {
+                            if (dom.className.includes(key)) {
+                                style = key;
+                                return;
+                            }
+                        });
+                        return {
+                            href: aElem.getAttribute("href"),
+                            title: aElem.getAttribute("title"),
+                            style: style,
+                        };
+                    },
                 },
             ],
             toDOM: node => {
@@ -143,14 +153,15 @@ class Button extends Node_1.default {
                 });
                 return [
                     "div",
-                    { class: "d-flex justify-content-center btn-block" },
+                    { class: `button-block ${node.attrs.style}` },
                     ["div", { contentEditable: false }, select],
                     [
                         "a",
                         {
                             href: node.attrs.href,
                             rel: "noopener noreferrer nofollow",
-                            class: `btn btn-md btn-${node.attrs.style}`
+                            class: `btn btn-md btn-${node.attrs.style}`,
+                            title: node.attrs.title
                         },
                         0
                     ],

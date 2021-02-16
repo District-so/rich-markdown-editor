@@ -30,16 +30,18 @@ export default class LinkPreview extends Node {
         draggable: boolean;
         parseDOM: {
             tag: string;
+            priority: number;
             getAttrs: (dom: HTMLElement) => {
                 href: string | null;
                 id: string | null;
-                title: string | null;
-                subtitle: string | null;
+                title: any;
+                subtitle: any;
                 image: string | null;
                 event_obj: string | null;
             };
         }[];
         toDOM: (node: any) => (string | {
+            'data-id': any;
             href: any;
             rel: string;
             class: string;

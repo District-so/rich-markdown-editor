@@ -1032,7 +1032,7 @@ const StyledEditor = styled("div")<{
 
   .code-block,
   .notice-block,
-  .btn-block,
+  .button-block,
   .image-block {
     position: relative;
 

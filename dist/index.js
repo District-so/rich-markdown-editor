@@ -816,7 +816,7 @@ const StyledEditor = styled_components_1.default("div") `
 
   .code-block,
   .notice-block,
-  .btn-block,
+  .button-block,
   .image-block {
     position: relative;
 
