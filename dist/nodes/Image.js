@@ -121,6 +121,10 @@ class Image extends Node_1.default {
         };
         this.handleSelect = ({ getPos }) => event => {
             event.preventDefault();
+            const { view } = this.editor;
+            const $pos = view.state.doc.resolve(getPos());
+            const transaction = view.state.tr.setSelection(new prosemirror_state_1.NodeSelection($pos));
+            view.dispatch(transaction);
         };
         this.component = props => {
             const { theme, isEditable, isSelected } = props;

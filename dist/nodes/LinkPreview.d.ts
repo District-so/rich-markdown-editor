@@ -37,7 +37,7 @@ export default class LinkPreview extends Node {
                 title: any;
                 subtitle: any;
                 image: string | null;
-                event_obj: string | null;
+                event_obj: null;
             };
         }[];
         toDOM: (node: any) => (string | {

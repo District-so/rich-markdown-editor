@@ -47,13 +47,22 @@ class LinkPreview extends Node_1.default {
                         const img = dom.getElementsByTagName("img")[0];
                         const title = dom.getElementsByClassName("title")[0];
                         const subtitle = dom.getElementsByClassName("subtitle")[0];
+                        const eventDay = dom.getElementsByClassName("event-day")[0];
+                        const eventMonth = dom.getElementsByClassName("event-month")[0];
+                        let eventObj = null;
+                        if (eventDay.innerText) {
+                            eventObj = {
+                                day: eventDay.innerText,
+                                month: eventMonth.innerText
+                            };
+                        }
                         return {
                             href: dom.getAttribute("href"),
                             id: dom.getAttribute("data-id"),
                             title: title.innerText,
                             subtitle: subtitle.innerText,
                             image: img.getAttribute("src"),
-                            event_obj: dom.getAttribute("event_obj"),
+                            event_obj: eventObj,
                         };
                     },
                 },
