@@ -43,14 +43,19 @@ class LinkPreview extends Node_1.default {
                     tag: "a.post-card",
                     priority: 55,
                     getAttrs: (dom) => {
-                        console.log('getAttrs', dom);
-                        const img = dom.getElementsByTagName("img")[0];
+                        let imgSrc = null;
+                        if (dom.getElementsByTagName("img") && dom.getElementsByTagName("img").length) {
+                            imgSrc = dom.getElementsByTagName("img")[0].getAttribute("src");
+                        }
                         const title = dom.getElementsByClassName("title")[0];
-                        const subtitle = dom.getElementsByClassName("subtitle")[0];
+                        let subtitle = '';
+                        if (dom.getElementsByClassName("subtitle") && dom.getElementsByClassName("subtitle").length) {
+                            subtitle = dom.getElementsByClassName("subtitle")[0].innerText;
+                        }
                         const eventDay = dom.getElementsByClassName("event-day")[0];
                         const eventMonth = dom.getElementsByClassName("event-month")[0];
                         let eventObj = null;
-                        if (eventDay.innerText) {
+                        if (eventDay && eventDay.innerText) {
                             eventObj = {
                                 day: eventDay.innerText,
                                 month: eventMonth.innerText
@@ -60,15 +65,14 @@ class LinkPreview extends Node_1.default {
                             href: dom.getAttribute("href"),
                             id: dom.getAttribute("data-id"),
                             title: title.innerText,
-                            subtitle: subtitle.innerText,
-                            image: img.getAttribute("src"),
+                            subtitle: subtitle,
+                            image: imgSrc,
                             event_obj: eventObj,
                         };
                     },
                 },
             ],
             toDOM: node => {
-                console.log('node', node);
                 const title = document.createElement("div");
                 title.innerHTML = node.attrs.title;
                 title.className = "title";

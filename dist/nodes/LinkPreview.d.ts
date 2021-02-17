@@ -35,8 +35,8 @@ export default class LinkPreview extends Node {
                 href: string | null;
                 id: string | null;
                 title: any;
-                subtitle: any;
-                image: string | null;
+                subtitle: string;
+                image: null;
                 event_obj: null;
             };
         }[];
