@@ -190,8 +190,12 @@ class LinkPreview extends Node_1.default {
         if (node.attrs.event_obj && node.attrs.event_obj.day && node.attrs.event_obj.month) {
             state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=\"" + node.attrs.image + "\" event_day=" + node.attrs.event_obj.day + " event_month=" + node.attrs.event_obj.month + "}");
         }
-        else
+        else if (node.attrs.image) {
             state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\" image=\"" + node.attrs.image + "\"}");
+        }
+        else {
+            state.write("[" + node.attrs.title + "](" + node.attrs.href + "){id=" + node.attrs.id + " subtitle=\"" + node.attrs.subtitle + "\"}");
+        }
         state.write("\n\n");
     }
     parseMarkdown() {

@@ -38,7 +38,7 @@ function markdownItLinkPreview(md) {
                     const href = insideLink.attrs ? insideLink.attrs[0][1] : "";
                     const id = insideLink.attrs[1][1];
                     const subtitle = insideLink.attrs[2][1];
-                    const image = insideLink.attrs[3][1];
+                    const image = insideLink.attrs.length > 3 ? insideLink.attrs[3][1] : null;
                     const event_day = insideLink.attrs.length > 4 ? insideLink.attrs[4][1] : null;
                     const event_month = insideLink.attrs.length > 5 ? insideLink.attrs[5][1] : null;
                     const token = new token_1.default("link_with_preview", "a", 0);
@@ -54,6 +54,7 @@ function markdownItLinkPreview(md) {
                         });
                     }
                     tokens.splice(i - 1, 3, token);
+                    insideLink = null;
                     break;
                 }
             }

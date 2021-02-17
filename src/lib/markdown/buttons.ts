@@ -53,6 +53,7 @@ export default function markdownItButton(md: MarkdownIt): void {
             tokenChildren.content = current.content;
             token.children = [tokenChildren];
             tokens.splice(i - 1, 3, token);
+            insideLink = null;
             break;
 	        }
 	      }

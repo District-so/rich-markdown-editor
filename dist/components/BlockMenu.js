@@ -117,7 +117,13 @@ class BlockMenu extends React.Component {
                 case "button": {
                     this.clearSearch();
                     this.props.onClose();
-                    this.props.onLinkToolbarOpen('button');
+                    const { dispatch, state } = this.props.view;
+                    const { from, to } = state.selection;
+                    dispatch(state.tr
+                        .insert(from, state.schema.nodes.button.create({
+                        href: "https://example.com",
+                        title: "<Title>"
+                    })));
                     return;
                 }
                 default:

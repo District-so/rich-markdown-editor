@@ -47,6 +47,7 @@ function markdownItButton(md) {
                         tokenChildren.content = current.content;
                         token.children = [tokenChildren];
                         tokens.splice(i - 1, 3, token);
+                        insideLink = null;
                         break;
                     }
                 }
