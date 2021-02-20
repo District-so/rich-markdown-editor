@@ -43,9 +43,20 @@ const docSearchResults = [
   },
   {
     id: "e",
-    title: "Super secret stuff",
+    title: "Test Event",
     subtitle: "Created by Coley",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0Mjg0NX0",
+    url: "/doc/secret-stuff",
+    event_obj: {
+      day: "28",
+      month: "Aug"
+    }
+  },
+  {
+    id: "e",
+    title: "Test Event without image",
+    subtitle: "Created by Coley",
+    image: "",
     url: "/doc/secret-stuff",
     event_obj: {
       day: "28",

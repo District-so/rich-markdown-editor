@@ -43,13 +43,34 @@ export default function markdownItLinkPreview(md: MarkdownIt): void {
           }
 
           if(current.content && insideLink && insideLink.attrs && insideLink.attrs.length > 1 && insideLink.attrs[1][0] == 'id'){
-	        	const href = insideLink.attrs ? insideLink.attrs[0][1] : "";
-            const id = insideLink.attrs[1][1];
-            const subtitle = insideLink.attrs[2][1];
-            const image = insideLink.attrs.length > 3 ? insideLink.attrs[3][1] : null;
-            const event_day = insideLink.attrs.length > 4 ? insideLink.attrs[4][1] : null;
-            const event_month = insideLink.attrs.length > 5 ? insideLink.attrs[5][1] : null;
-	        	const token = new Token("link_with_preview", "a", 0);
+	        	let href = "";
+            let id = null;
+            let subtitle = null;
+            let image = null;
+            let event_day = null;
+            let event_month = null;
+            for(const attr of insideLink.attrs){
+              if(attr[0] == 'href'){
+                href = attr[1];
+              }
+              if(attr[0] == 'id'){
+                id = attr[1];
+              }
+              if(attr[0] == 'subtitle'){
+                subtitle = attr[1];
+              }
+              if(attr[0] == 'image'){
+                image = attr[1];
+              }
+              if(attr[0] == 'event_day'){
+                event_day = attr[1];
+              }
+              if(attr[0] == 'event_month'){
+                event_month = attr[1];
+              }
+            }
+	        	
+            const token = new Token("link_with_preview", "a", 0);
             token.attrSet("href", href);
             token.attrSet("id", id);
             token.attrSet("title", current.content);
