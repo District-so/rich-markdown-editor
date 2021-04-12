@@ -679,6 +679,10 @@ const StyledEditor = styled("div")<{
 
   li {
     position: relative;
+
+    p {
+      padding-bottom: 0px;
+    }
   }
 
   img {
@@ -930,6 +934,10 @@ const StyledEditor = styled("div")<{
     margin: 0;
     padding-left: 10px;
     font-style: italic;
+
+    p:last-child {
+      padding-bottom: 0px;
+    }
   }
 
   b,
@@ -1070,6 +1078,10 @@ const StyledEditor = styled("div")<{
     select:focus,
     select:active {
       display: inline;
+    }
+
+    p:last-child {
+      padding-bottom: 0px;
     }
   }
 
@@ -1230,6 +1242,10 @@ const StyledEditor = styled("div")<{
       padding: 4px 8px;
       text-align: left;
       min-width: 100px;
+
+      p {
+        padding-bottom: 0px;
+      }
     }
 
     .selectedCell {
@@ -1360,7 +1376,7 @@ const StyledEditor = styled("div")<{
     outline: none;
     border: 0;
     line-height: 1;
-    margin-top: -6px;
+    margin-top: -8px;
     left: -34px;
 
     &:hover,
