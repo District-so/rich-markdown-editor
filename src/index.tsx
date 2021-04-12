@@ -953,6 +953,7 @@ const StyledEditor = styled("div")<{
   p {
     position: relative;
     margin: 0;
+    padding-bottom: 1rem;
   }
 
   a:not(.btn):not(.post-card) {
