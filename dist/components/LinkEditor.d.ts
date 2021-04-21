@@ -54,6 +54,7 @@ declare class LinkEditor extends React.Component<Props, State> {
     handleKeyDown: (event: React.KeyboardEvent<Element>) => void;
     handleFocusLink: (selectedIndex: number) => void;
     handleChange: (event: any) => Promise<void>;
+    handleBlur: (event: any) => void;
     handleOpenLink: (event: any) => void;
     handleCreateLink: (value: string) => Promise<void> | undefined;
     handleRemoveLink: () => void;

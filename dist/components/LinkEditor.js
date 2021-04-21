@@ -140,6 +140,15 @@ class LinkEditor extends React.Component {
                 }
             }
         };
+        this.handleBlur = (event) => {
+            const value = event.target.value;
+            if (value) {
+                this.save(value, value);
+                if (this.initialSelectionLength) {
+                    this.moveSelectionToEnd();
+                }
+            }
+        };
         this.handleOpenLink = (event) => {
             event.preventDefault();
             this.props.onClickLink(this.href, event);
@@ -207,7 +216,7 @@ class LinkEditor extends React.Component {
         return (React.createElement(Wrapper, null,
             React.createElement(Input_1.default, { value: value, placeholder: showCreateLink
                     ? dictionary.findOrCreateDoc
-                    : dictionary.searchOrPasteLink, onKeyDown: this.handleKeyDown, onChange: this.handleChange, autoFocus: this.href === "" }),
+                    : dictionary.searchOrPasteLink, onKeyDown: this.handleKeyDown, onChange: this.handleChange, onBlur: this.handleBlur, autoFocus: this.href === "" }),
             React.createElement(ToolbarButton_1.default, { onClick: this.handleOpenLink, disabled: !value },
                 React.createElement(Tooltip, { tooltip: dictionary.openLink, placement: "top" },
                     React.createElement(outline_icons_1.OpenIcon, { color: theme.toolbarItem }))),

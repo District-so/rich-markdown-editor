@@ -224,6 +224,16 @@ class LinkEditor extends React.Component<Props, State> {
     }
   };
 
+  handleBlur = (event): void => {
+    const value = event.target.value;
+    if(value){
+      this.save(value, value);
+      if (this.initialSelectionLength) {
+        this.moveSelectionToEnd();
+      }
+    }
+  };
+
   handleOpenLink = (event): void => {
     event.preventDefault();
     this.props.onClickLink(this.href, event);
@@ -305,6 +315,7 @@ class LinkEditor extends React.Component<Props, State> {
           }
           onKeyDown={this.handleKeyDown}
           onChange={this.handleChange}
+          onBlur={this.handleBlur}
           autoFocus={this.href === ""}
         />
 
