@@ -668,7 +668,7 @@ const StyledEditor = styled_components_1.default("div") `
     margin-right: 4px;
     position: relative;
     top: 1px;
-    margin-top: -2px;
+    margin-top: -5px;
   }
 
   .notice-block.secondary {
